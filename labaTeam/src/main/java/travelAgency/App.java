@@ -12,6 +12,6 @@ public class App
     public static final Logger LOGGER = LogManager.getLogger(App.class);
     public static void main( String[] args )
     {
-        LOGGER.info( "Hello Team!!" );
+        LOGGER.info( "Hello Team!!!" );
     }
 }
