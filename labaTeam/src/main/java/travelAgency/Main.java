@@ -12,7 +12,6 @@ public class Main
     public static final Logger LOGGER = LogManager.getLogger(Main.class);
     public static void main( String[] args )
     {
-        LOGGER.info( "Hello Team!!! Good Change" );
-        LOGGER.info( "Welcome to the airport" );
+        LOGGER.info( "Hello Team!!!! Good Change" );
     }
 }
