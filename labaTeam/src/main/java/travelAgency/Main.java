@@ -7,9 +7,9 @@ import org.apache.logging.log4j.Logger;
  * Hello world!
  *
  */
-public class App
+public class Main
 {
-    public static final Logger LOGGER = LogManager.getLogger(App.class);
+    public static final Logger LOGGER = LogManager.getLogger(Main.class);
     public static void main( String[] args )
     {
         LOGGER.info( "Hello Team!!! Good Change" );
