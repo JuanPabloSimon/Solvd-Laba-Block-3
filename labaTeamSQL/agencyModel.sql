@@ -37,16 +37,28 @@ CREATE TABLE IF NOT EXISTS `flightAgency`.`Airlines` (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `flightAgency`.`Flight` (
   `idFlight` INT NOT NULL AUTO_INCREMENT,
-  `departureId` INT NULL,
-  `destinationId` INT NULL,
   `price` FLOAT NULL,
   `Airlines_idAirlines` INT NOT NULL,
+  `idDepartureAirport` INT NOT NULL,
+  `idArrivalAirport` INT NOT NULL,
   PRIMARY KEY (`idFlight`),
   UNIQUE INDEX `idFlight_UNIQUE` (`idFlight` ASC),
   INDEX `fk_Flight_Airlines1_idx` (`Airlines_idAirlines` ASC),
+  INDEX `fk_Flight_Airport1_idx` (`idDepartureAirport` ASC),
+  INDEX `fk_Flight_Airport2_idx` (`idArrivalAirport` ASC),
   CONSTRAINT `fk_Flight_Airlines1`
     FOREIGN KEY (`Airlines_idAirlines`)
     REFERENCES `flightAgency`.`Airlines` (`idAirlines`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Flight_Airport1`
+    FOREIGN KEY (`idDepartureAirport`)
+    REFERENCES `flightAgency`.`Airport` (`idAirport`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Flight_Airport2`
+    FOREIGN KEY (`idArrivalAirport`)
+    REFERENCES `flightAgency`.`Airport` (`idAirport`)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
 
