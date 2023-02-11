@@ -18,6 +18,8 @@
         </environment>
     </environments>
     <mappers>
-        <!--<mapper resource="xml.files/mappers/repair-mapper.xml"/>-->
+        <mapper resource="mappers/flight-mapper.xml"/>
+        <mapper resource="mappers/airport-mapper.xml"/>
+        <mapper resource="mappers/airline-mapper.xml"/>
     </mappers>
 </configuration>

@@ -3,7 +3,10 @@
         "org/apache/ibatis/builder/xml/mybatis-3-mapper.dtd">
 <mapper namespace="dao.IAirlineDAO">
     <select id="getEntityById" resultMap="airlineResultMap">
-        <!--implement-->
+        SELECT
+        *
+        FROM flightAgency.Airlines
+        WHERE idAirlines=#{id}
     </select>
     <insert id="createEntity" useGeneratedKeys="true" keyProperty="id" parameterType="travelAgency.airline.Airline">
         <!--implement-->
@@ -17,8 +20,6 @@
     <resultMap id="airlineResultMap" type="travelAgency.airline.Airline" autoMapping="false">
         <id column="idAirlines" property="id"/>
         <result column="airlineName" property="name"/>
-        <!-- <collection property="employees"
-                     resultMap="com.solvd.app.dao.IEmployeeDAO.employeeResultMap"/>-->
     </resultMap>
 </mapper>
 

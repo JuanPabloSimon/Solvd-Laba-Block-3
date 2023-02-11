@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "org/apache/ibatis/builder/xml/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IFlightDAO">
+    <select id="getEntityById" resultMap="flightResultMap">
+        SELECT
+        *
+        FROM flightAgency.Flight
+        WHERE idFlight=#{id}
+    </select>
+    <insert id="createEntity" useGeneratedKeys="true" keyProperty="id" parameterType="travelAgency.flight.Flight">
+        <!--implement-->
+    </insert>
+    <update id="updateEntity" parameterType="travelAgency.flight.Flight">
+        <!--implement-->
+    </update>
+    <delete id="removeById" parameterType="int">
+        <!--implement-->
+    </delete>
+
+
+    <resultMap id="flightResultMap" type="travelAgency.flight.Flight" autoMapping="false">
+        <id column="idFlight" property="id"/>
+        <result column="price" property="price"/>
+        <!--    <association property="airlines" javaType="travelAgency.airline.Airline">
+                <id column="idAirlines" property="id"/>
+                <result column="airlineName" property="name"/>
+            </association>-->
+        <association property="start" javaType="travelAgency.airport.Airport">
+            <id column="idAirport" property="id"/>
+            <result column="airportName" property="name"/>
+        </association>
+        <association property="finalDestination" javaType="travelAgency.airport.Airport">
+            <id column="idAirport" property="id"/>
+            <result column="airportName" property="name"/>
+        </association>
+        <!--<association property="airport" javaType="travelAgency.airport.Airport">
+            <id column="idAirport" property="id"/>
+            <result column="airportName" property="name"/>
+            <result column="city" property="city"/>
+            <result column="country" property="country"/>
+        </association>-->
+        <!--<association property="airport" javaType="travelAgency.airport.Airport">
+            <id column="idAirport" property="id"/>
+            <result column="airlineName" property="name"/>
+            <result column="city" property="city"/>
+            <result column="country" property="country"/>
+        </association>-->
+    </resultMap>
+</mapper>

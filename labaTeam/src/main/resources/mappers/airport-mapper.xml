@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "org/apache/ibatis/builder/xml/mybatis-3-mapper.dtd">
+<mapper namespace="dao.IAirportDAO">
+    <select id="getEntityById" resultMap="airportResultMap">
+        <!--implement-->
+    </select>
+    <insert id="createEntity" useGeneratedKeys="true" keyProperty="id" parameterType="travelAgency.airport.Airport">
+        <!--implement-->
+    </insert>
+    <update id="updateEntity" parameterType="travelAgency.airport.Airport">
+        <!--implement-->
+    </update>
+    <delete id="removeById" parameterType="int">
+        <!--implement-->
+    </delete>
+    <resultMap id="airportResultMap" type="travelAgency.airport.Airport" autoMapping="false">
+        <id column="idAirport" property="id"/>
+        <result column="airportName" property="name"/>
+        <result column="city" property="city"/>
+        <result column="country" property="country"/>
+        <!-- <collection property="employees"
+                     resultMap="com.solvd.app.dao.IEmployeeDAO.employeeResultMap"/>-->
+    </resultMap>
+</mapper>
