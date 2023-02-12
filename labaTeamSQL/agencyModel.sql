@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS `flightAgency`.`Airport` (
   `airportName` VARCHAR(45) NULL,
   `city` VARCHAR(45) NULL,
   `country` VARCHAR(45) NULL,
-  `coordinates` POINT NULL,
+  `latitud` DOUBLE NULL,
+  `longitud` DOUBLE NULL,
   PRIMARY KEY (`idAirport`),
   UNIQUE INDEX `idAirport_UNIQUE` (`idAirport` ASC));
 

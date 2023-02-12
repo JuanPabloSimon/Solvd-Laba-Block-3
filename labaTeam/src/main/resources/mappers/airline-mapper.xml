@@ -5,8 +5,8 @@
     <select id="getEntityById" resultMap="airlineResultMap">
         SELECT
         *
-        FROM flightAgency.Airlines
-        LEFT JOIN flightAgency.Flight
+        FROM Airlines
+        LEFT JOIN Flight
         ON Airlines.idAirlines = Flight.Airlines_idAirlines
         WHERE idAirlines=#{id}
     </select>
