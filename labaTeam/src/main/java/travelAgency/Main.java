@@ -21,7 +21,6 @@ public class Main {
         //Services to test if the mappers are working
 
         AirportService airportService = new AirportService();
-
         LOGGER.info(airportService.getAirportById(4));
 
 //        FlightService flightService = new FlightService();

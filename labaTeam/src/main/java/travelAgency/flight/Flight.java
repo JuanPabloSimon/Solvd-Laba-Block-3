@@ -2,26 +2,25 @@ package travelAgency.flight;
 
 import helpers.DistanceCalculator;
 import travelAgency.airport.Airport;
+import travelAgency.airport.AirportLocation;
 
 public class Flight {
     private int id;
-    private Airport start;
-    private Airport finalDestination;
+    private AirportLocation start;
+    private AirportLocation finalDestination;
     private double price;
     private double distance;
 
-    public Flight() {
-        if (finalDestination == null) {
-            this.finalDestination = new Airport();
-        }
-    }
-
-    public Flight(int id, Airport start, Airport finalDestination, double price) {
+    public Flight(int id, AirportLocation start, AirportLocation finalDestination, double price) {
         this.id = id;
         this.start = start;
         this.finalDestination = finalDestination;
         this.price = price;
         setDistance();
+    }
+
+    public Flight(){
+
     }
 
     public int getId() {
@@ -34,20 +33,20 @@ public class Flight {
         }
     }
 
-    public Airport getStart() {
+    public AirportLocation getStart() {
         return start;
     }
 
-    public void setStart(Airport start) {
+    public void setStart(AirportLocation start) {
         this.start = start;
         setDistance();
     }
 
-    public Airport getFinalDestination() {
+    public AirportLocation getFinalDestination() {
         return finalDestination;
     }
 
-    public void setFinalDestination(Airport finalDestination) {
+    public void setFinalDestination(AirportLocation finalDestination) {
         this.finalDestination = finalDestination;
         setDistance();
     }

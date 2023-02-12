@@ -17,9 +17,9 @@
         b.idAirport as arrivalId,
         b.airportName as arrivalAirport,
         b.city as arrivalCity,
-        b.country as country,
-        b.latitude as latitude,
-        b.longitude as longitude
+        b.country as aCountry,
+        b.latitude as aLatitude,
+        b.longitude as aLongitude
     </sql>
 
     <select id="getEntityById" resultMap="airportResultMap">
