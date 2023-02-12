@@ -30,9 +30,6 @@
         <result column="airportName" property="name"/>
         <result column="city" property="city"/>
         <result column="country" property="country"/>
-        <!--   <association property="airlines" javaType="java.util.ArrayList" resultMap="" ofType="travelAgency.airline.Airline">
-               <resultMap type="travelAgency.airline.Airline"/>
-           </association>-->
         <result column="latitude" property="latitude"/>
         <result column="longitude" property="longitude"/>
         <collection property="airlines" resultMap="dao.IAirlineDAO.airlineResultMap"/>
