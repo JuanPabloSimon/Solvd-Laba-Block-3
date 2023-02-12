@@ -4,6 +4,7 @@ import travelAgency.airport.Airport;
 import travelAgency.flight.Flight;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Airline {
     private int id;
@@ -45,6 +46,15 @@ public class Airline {
     }
 
 
+    public ArrayList<String> getPossibleDestinys() {
+        ArrayList<String> possibleDestinys = new ArrayList<>();
+        for (Flight flight: this.flights) {//This looks for direct flights
+            possibleDestinys.add(flight.getFinalDestination().getName());
+        }
+        return possibleDestinys;
+    }
+
+
 
 
     @Override
@@ -55,6 +65,7 @@ public class Airline {
                 ", flights=" + flights +
                 '}';
     }
+
 
 
 }

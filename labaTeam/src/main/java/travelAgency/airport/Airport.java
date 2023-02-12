@@ -96,7 +96,7 @@ public class Airport {
         this.longitude = longitude;
     }
 
-    public void searchRoute(Airport destination){
+    public ArrayList<Trip> searchRoute(Airport destination){
         ArrayList<Trip> possibleTrips = new ArrayList<>();
         for (Airline a: this.airlines) {//This looks for direct flights
             if (a.canFlyMeTo(destination) != null){
@@ -104,9 +104,15 @@ public class Airport {
                 possibleTrips.get(-1).addFlight(a.canFlyMeTo(destination));
             }
         }
-        
+        return possibleTrips;
+    }
 
-
+    public ArrayList<String> getPossibleDestinys(){
+        ArrayList<String> possibleDestinys = new ArrayList<>();
+        for (Airline a: this.airlines) {//This looks for direct flights
+            possibleDestinys.addAll(a.getPossibleDestinys());
+        }
+        return possibleDestinys;
     }
 
     @Override
