@@ -13,7 +13,6 @@
         WHERE f.idFlight = #{id}
     </select>
 
-    <!-- this assumes that the Flight class has a single associated airline, as represented by start.airlines[0].id.-->
 
     <insert id="createEntity" useGeneratedKeys="true" keyProperty="id" parameterType="travelAgency.flight.Flight">
         INSERT INTO Flight (price, Airlines_idAirlines, IdDepartureAirport, idArrivalAirport)
@@ -30,8 +29,6 @@
         DELETE FROM Flight
         WHERE idFlight = #{id}
     </delete>
-
-
     <resultMap id="flightResultMap" type="travelAgency.flight.Flight" autoMapping="false">
         <id column="idFlight" property="id"/>
         <result column="price" property="price"/>

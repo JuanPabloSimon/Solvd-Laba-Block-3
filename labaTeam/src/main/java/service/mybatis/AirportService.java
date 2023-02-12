@@ -5,28 +5,47 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import service.IAirportService;
 import travelAgency.airport.Airport;
 import utils.MyBatisDaoFactory;
 
-import java.sql.SQLException;
+import java.util.List;
 
-public class AirportService implements IAirportService {
+public class AirportService implements IAirportDAO {
     private final static Logger LOGGER = LogManager.getLogger(AirportService.class);
     private static final SqlSessionFactory SESSION_FACTORY = MyBatisDaoFactory.getSqlSessionFactory();
 
+
     @Override
-    public Airport getAirportById(int airportId) throws SQLException {
+    public List<Airport> findAll() {
+        try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
+            IAirportDAO airportDAO = sqlSession.getMapper(IAirportDAO.class);
+            List<Airport> airports = airportDAO.findAll();
+            return airports;
+        }
+    }
+
+    @Override
+    public Airport getEntityById(int id) {
         Airport airport;
         try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
             IAirportDAO airportDAO = sqlSession.getMapper(IAirportDAO.class);
-            airport = airportDAO.getEntityById(airportId);
+            airport = airportDAO.getEntityById(id);
         }
         return airport;
     }
 
     @Override
-    public Airport createAirport(Airport newAirport) throws SQLException {
-        return null;
+    public void createEntity(Airport entity) {
+
+    }
+
+    @Override
+    public void updateEntity(Airport entity) {
+
+    }
+
+    @Override
+    public void removeById(int id) {
+
     }
 }

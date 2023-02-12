@@ -10,15 +10,6 @@
         ON Airlines.idAirlines = Flight.Airlines_idAirlines
         WHERE idAirlines=#{id}
     </select>
-    <insert id="createEntity" useGeneratedKeys="true" keyProperty="id" parameterType="travelAgency.airline.Airline">
-        <!--implement-->
-    </insert>
-    <update id="updateEntity" parameterType="travelAgency.airline.Airline">
-        <!--implement-->
-    </update>
-    <delete id="removeById" parameterType="int">
-        <!--implement-->
-    </delete>
     <resultMap id="airlineResultMap" type="travelAgency.airline.Airline" autoMapping="false">
         <id column="idAirlines" property="id"/>
         <result column="airlineName" property="name"/>

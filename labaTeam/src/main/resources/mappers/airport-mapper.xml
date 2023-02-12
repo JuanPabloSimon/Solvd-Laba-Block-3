@@ -36,6 +36,19 @@
         ON b.idAirport = Flight.idArrivalAirport
         WHERE a.idAirport = #{id}
     </select>
+    <select id="findAll" resultMap="airportResultMap">
+        Select
+        <include refid="body"/>
+        FROM Airport a
+        LEFT JOIN AirlineInAirport aInAirP
+        ON idAirport = aInAirP.Airport_idAirport
+        LEFT JOIN Airlines Airlines
+        ON Airlines.idAirlines = aInAirP.Airlines_idAirlines
+        INNER JOIN Flight
+        ON Airlines.idAirlines = Flight.Airlines_idAirlines AND Flight.idDepartureAirport = a.idAirport
+        Left Join Airport b
+        ON b.idAirport = Flight.idArrivalAirport
+    </select>
     <insert id="createEntity" useGeneratedKeys="true" keyProperty="id" parameterType="travelAgency.airport.Airport">
         INSERT INTO Airport (airportName, city, country, latitude, longitude)
         VALUES (#{name}, #{city}, #{country}, #{latitude}, #{longitude})
