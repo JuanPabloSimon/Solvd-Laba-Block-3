@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class Airport {
     private int id;
+    private String name;
     private String country;
     private String city;
     private ArrayList<Airline> airlines;
@@ -13,8 +14,13 @@ public class Airport {
     private double longitude;
 
 
-    public Airport(int id, String country, String city, double latitude, double longitude) {
+    public Airport() {
+    }
+
+
+    public Airport(int id, String name, String country, String city, double latitude, double longitude) {
         this.id = id;
+        this.name = name;
         this.country = country;
         this.city = city;
         this.latitude = latitude;
@@ -26,9 +32,17 @@ public class Airport {
     }
 
     public void setId(int id) {
-        if (id > 0){
+        if (id > 0) {
             this.id = id;
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCountry() {
@@ -85,12 +99,15 @@ public class Airport {
     public String toString() {
         StringBuilder result = new StringBuilder("Airport{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 ", airlines=[");
-        for (Airline a : this.airlines) {
-            result.append("\n");
-            result.append(a.toString()).append(", ");
+        if (this.airlines != null) {
+            for (Airline a : this.airlines) {
+                result.append("\n");
+                result.append(a.toString()).append(", ");
+            }
         }
         result.append("\n], \ncoordinates=").append(latitude).append("\n}");
         return result.toString();

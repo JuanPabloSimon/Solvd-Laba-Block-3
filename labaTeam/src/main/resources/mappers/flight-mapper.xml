@@ -3,48 +3,52 @@
         "org/apache/ibatis/builder/xml/mybatis-3-mapper.dtd">
 <mapper namespace="dao.IFlightDAO">
     <select id="getEntityById" resultMap="flightResultMap">
-        SELECT
-        *
-        FROM flightAgency.Flight
-        WHERE idFlight=#{id}
+        SELECT f.idFlight, f.price, f.Airlines_idAirlines,
+        da.idAirport AS IdDepartureAirport, da.airportName, da.city, da.country, da.coordinates,
+        aa.idAirport AS idArrivalAirport, aa.airportName AS arrivalAirportName, aa.city AS arrivalCity , aa.country AS
+        arrivalCountry, aa.coordinates AS arrivalCoordinates
+        FROM Flight f
+        JOIN Airport da ON f.IdDepartureAirport = da.idAirport
+        JOIN Airport aa ON f.idArrivalAirport = aa.idAirport
+        WHERE f.idFlight = #{id}
     </select>
+
+    <!-- this assumes that the Flight class has a single associated airline, as represented by start.airlines[0].id.-->
+
     <insert id="createEntity" useGeneratedKeys="true" keyProperty="id" parameterType="travelAgency.flight.Flight">
-        <!--implement-->
+        INSERT INTO Flight (price, Airlines_idAirlines, IdDepartureAirport, idArrivalAirport)
+        VALUES (#{price}, #{start.airlines[0].id}, #{start.id}, #{finalDestination.id})
     </insert>
+
     <update id="updateEntity" parameterType="travelAgency.flight.Flight">
-        <!--implement-->
+        UPDATE Flight
+        SET price=#{price}, Airlines_idAirlines=#{start.airlines[0].id}, IdDepartureAirport=#{start.id},
+        idArrivalAirport=#{finalDestination.id}
+        WHERE idFlight=#{id}
     </update>
     <delete id="removeById" parameterType="int">
-        <!--implement-->
+        DELETE FROM Flight
+        WHERE idFlight = #{id}
     </delete>
 
 
     <resultMap id="flightResultMap" type="travelAgency.flight.Flight" autoMapping="false">
         <id column="idFlight" property="id"/>
         <result column="price" property="price"/>
-        <!--    <association property="airlines" javaType="travelAgency.airline.Airline">
-                <id column="idAirlines" property="id"/>
-                <result column="airlineName" property="name"/>
-            </association>-->
+        <!--<result column="Airlines_idAirlines" property="airlineId"/>-->
         <association property="start" javaType="travelAgency.airport.Airport">
-            <id column="idAirport" property="id"/>
-            <result column="airportName" property="name"/>
+            <id column="IdDepartureAirport" property="id"/>
+            <result column="airportName" property="name" javaType="java.lang.String"/>
+            <result column="city" property="city"/>
+            <result column="country" property="country"/>
+            <!--<result column="coordinates" property="coordinates"/>-->
         </association>
         <association property="finalDestination" javaType="travelAgency.airport.Airport">
-            <id column="idAirport" property="id"/>
-            <result column="airportName" property="name"/>
+            <id column="idArrivalAirport" property="id"/>
+            <result column="arrivalAirportName" property="name" javaType="java.lang.String"/>
+            <result column="arrivalCity" property="city"/>
+            <result column="arrivalCountry" property="country"/>
+            <!--<result column="coordinates" property="arrivalCoordinates"/>-->
         </association>
-        <!--<association property="airport" javaType="travelAgency.airport.Airport">
-            <id column="idAirport" property="id"/>
-            <result column="airportName" property="name"/>
-            <result column="city" property="city"/>
-            <result column="country" property="country"/>
-        </association>-->
-        <!--<association property="airport" javaType="travelAgency.airport.Airport">
-            <id column="idAirport" property="id"/>
-            <result column="airlineName" property="name"/>
-            <result column="city" property="city"/>
-            <result column="country" property="country"/>
-        </association>-->
     </resultMap>
 </mapper>

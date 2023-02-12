@@ -10,6 +10,12 @@ public class Flight {
     private double price;
     private double distance;
 
+    public Flight() {
+        if (finalDestination == null) {
+            this.finalDestination = new Airport();
+        }
+    }
+
     public Flight(int id, Airport start, Airport finalDestination, double price) {
         this.id = id;
         this.start = start;
@@ -23,7 +29,7 @@ public class Flight {
     }
 
     public void setId(int id) {
-        if (id > 0){
+        if (id > 0) {
             this.id = id;
         }
     }
@@ -51,7 +57,7 @@ public class Flight {
     }
 
     public void setPrice(double price) {
-        if (price > 0){
+        if (price > 0) {
             this.price = price;
         }
     }
@@ -60,7 +66,7 @@ public class Flight {
         return distance;
     }
 
-    private void setDistance(){
+    private void setDistance() {
         this.distance = DistanceCalculator.distance(this.start.getLatitude(),
                 this.start.getLongitude(),
                 this.finalDestination.getLatitude(),
