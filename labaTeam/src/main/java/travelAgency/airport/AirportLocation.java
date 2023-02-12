@@ -19,6 +19,14 @@ public class AirportLocation {
         this.longitude = longitude;
     }
 
+    public AirportLocation(Airport airport){
+        this.name = airport.getName();
+        this.country = airport.getCountry();
+        this.city = airport.getCity();
+        this.latitude = airport.getLatitude();
+        this.longitude = airport.getLongitude();
+    }
+
     public String getName() {
         return name;
     }

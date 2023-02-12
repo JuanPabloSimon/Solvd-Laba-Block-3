@@ -1,6 +1,7 @@
 package travelAgency.trip;
 
 import travelAgency.airport.Airport;
+import travelAgency.airport.AirportLocation;
 import travelAgency.flight.Flight;
 
 import java.util.ArrayList;
@@ -8,21 +9,22 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class Trip {
     private int id;
-    private Airport start;
-    private Airport finalDestination;
+    private AirportLocation start;
+    private AirportLocation finalDestination;
     private ArrayList<Flight> flights;
 
     public Trip(int id, Airport start, Airport finalDestination, ArrayList<Flight> flights) {
         this.id = id;
-        this.start = start;
-        this.finalDestination = finalDestination;
+        this.start = new AirportLocation(start);
+        this.finalDestination = new AirportLocation(finalDestination);
         this.flights = flights;
     }
 
     public Trip(int id, Airport start, Airport finalDestination) {
         this.id = id;
-        this.start = start;
-        this.finalDestination = finalDestination;
+        this.start = new AirportLocation(start);
+        this.finalDestination = new AirportLocation(finalDestination);
+        this.flights = new ArrayList<>();
     }
 
     public int getId() {
@@ -35,19 +37,19 @@ public class Trip {
         }
     }
 
-    public Airport getStart() {
+    public AirportLocation getStart() {
         return start;
     }
 
-    public void setStart(Airport start) {
+    public void setStart(AirportLocation start) {
         this.start = start;
     }
 
-    public Airport getFinalDestination() {
+    public AirportLocation getFinalDestination() {
         return finalDestination;
     }
 
-    public void setFinalDestination(Airport finalDestination) {
+    public void setFinalDestination(AirportLocation finalDestination) {
         this.finalDestination = finalDestination;
     }
 
@@ -60,9 +62,7 @@ public class Trip {
     }
 
     public void addFlight(Flight flight) {
-        if (!flights.contains(flight)) {
-            this.flights.add(flight);
-        }
+        this.flights.add(flight);
     }
 
     public void removeFlight(Flight flight) {
@@ -75,5 +75,15 @@ public class Trip {
 
     public double getDistance(){
         return this.flights.stream().mapToDouble(Flight::getDistance).sum();
+    }
+
+    @Override
+    public String toString() {
+        return "Trip{" +
+                "id=" + id +
+                ", start=" + start +
+                ", finalDestination=" + finalDestination +
+                ", flights=" + flights +
+                '}';
     }
 }

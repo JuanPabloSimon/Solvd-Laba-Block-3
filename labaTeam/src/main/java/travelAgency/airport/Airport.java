@@ -101,7 +101,7 @@ public class Airport {
         for (Airline a: this.airlines) {//This looks for direct flights
             if (a.canFlyMeTo(destination) != null){
                 possibleTrips.add(new Trip(0, this, destination));
-                possibleTrips.get(-1).addFlight(a.canFlyMeTo(destination));
+                possibleTrips.get(possibleTrips.size() - 1).addFlight(a.canFlyMeTo(destination));
             }
         }
         return possibleTrips;

@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service.mybatis.AirportService;
 import travelAgency.airport.Airport;
+import travelAgency.trip.Trip;
 import utils.ConnectionPool;
 
 import java.sql.SQLException;
@@ -25,6 +26,9 @@ public class Main {
 
         List<String> possibleDestinys = airports.get(8).getPossibleDestinys();
         possibleDestinys.forEach(LOGGER::info);
+
+        ArrayList<Trip> tripFromBsAs = airports.get(8).searchRoute(airports.get(0));
+        tripFromBsAs.forEach(LOGGER::info);
 
 
 //        FlightService flightService = new FlightService();
