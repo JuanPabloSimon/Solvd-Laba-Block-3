@@ -49,7 +49,7 @@ public class Airline {
     public ArrayList<String> getPossibleDestinys() {
         ArrayList<String> possibleDestinys = new ArrayList<>();
         for (Flight flight: this.flights) {//This looks for direct flights
-            possibleDestinys.add(flight.getFinalDestination().getName());
+            possibleDestinys.add(flight.getFinalDestination().getCity());
         }
         return possibleDestinys;
     }

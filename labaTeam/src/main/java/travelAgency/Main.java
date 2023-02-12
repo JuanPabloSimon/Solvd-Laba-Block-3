@@ -11,6 +11,7 @@ import utils.ConnectionPool;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
     public static final Logger LOGGER = LogManager.getLogger(Main.class);
@@ -21,11 +22,20 @@ public class Main {
         //Services to test if the mappers are working
 
         AirportService airportService = new AirportService();
-        LOGGER.info(airportService.findAll());
+        //LOGGER.info(airportService.findAll());
         List<Airport> airports = airportService.findAll();
 
         ArrayList<Trip> tripFromBsAs = airports.get(8).searchRoute(airports.get(0));
-        tripFromBsAs.forEach(LOGGER::info);
+        //tripFromBsAs.forEach(LOGGER::info);
+
+        Optional<Airport> buenosAires = airports.stream()
+                .filter(a -> a.getCity().equals("Buenos Aires"))
+                .findFirst();
+
+        ArrayList<String> possibleDestinys = buenosAires.isPresent() ? buenosAires.get().getPossibleDestinys() : null;
+
+        airports.stream().filter(a -> possibleDestinys.contains(a.getCity())).forEach(a -> LOGGER.info(a.getCity()));
+
 
 
 //        FlightService flightService = new FlightService();
