@@ -6,8 +6,8 @@ import travelAgency.airport.AirportLocation;
 
 public class Flight {
     private int id;
-    private AirportLocation start;
-    private AirportLocation finalDestination;
+    private AirportLocation start = new AirportLocation();
+    private AirportLocation finalDestination = new AirportLocation();
     private double price;
     private double distance;
 
@@ -80,7 +80,7 @@ public class Flight {
                 ", \nstart=" + start.getName() + " " + start.getCity() +
                 ", \nfinalDestination=" + finalDestination.getName() + " " + finalDestination.getCity() +
                 ", \nprice=" + price +
-                ", \ndistance=" + distance +
+                ", \ndistance=" + Math.round(distance*100.0)/100.0 + " Km" +
                 '}';
     }
 }
