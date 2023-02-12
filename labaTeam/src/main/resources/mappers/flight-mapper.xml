@@ -37,15 +37,13 @@
         <result column="price" property="price"/>
         <!--<result column="Airlines_idAirlines" property="airlineId"/>-->
         <association property="start" javaType="travelAgency.airport.Airport">
-            <id column="IdDepartureAirport" property="id"/>
             <result column="airportName" property="name" javaType="java.lang.String"/>
             <result column="city" property="city"/>
             <result column="country" property="country"/>
             <!--<result column="coordinates" property="coordinates"/>-->
         </association>
         <association property="finalDestination" javaType="travelAgency.airport.Airport">
-            <id column="idArrivalAirport" property="id"/>
-            <result column="arrivalAirportName" property="name" javaType="java.lang.String"/>
+            <result column="arrivalAirport" property="name" javaType="java.lang.String"/>
             <result column="arrivalCity" property="city"/>
             <result column="arrivalCountry" property="country"/>
             <!--<result column="coordinates" property="arrivalCoordinates"/>-->

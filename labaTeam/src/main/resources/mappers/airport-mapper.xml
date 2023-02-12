@@ -2,15 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "org/apache/ibatis/builder/xml/mybatis-3-mapper.dtd">
 <mapper namespace="dao.IAirportDAO">
+
+    <sql id="body">
+        a.idAirport as idAirport,
+        a.airportName as airportName,
+        a.city as city,
+        a.country as country,
+        a.latitude as latitude,
+        a.longitude as longitude,
+        Airlines.idAirlines as idAirlines,
+        Airlines.airlineName as airlineName,
+        Flight.idFlight as idFlight,
+        Flight.price as price,
+        b.idAirport as arrivalId,
+        b.airportName as arrivalAirport,
+        b.city as arrivalCity,
+        b.country as country,
+        b.latitude as latitude,
+        b.longitude as longitude
+    </sql>
+
     <select id="getEntityById" resultMap="airportResultMap">
-        SELECT * FROM Airport
-        LEFT JOIN AirlineInAirport
-        ON Airport.idAirport = AirlineInAirport.Airport_idAirport
-        LEFT JOIN Airlines
-        ON Airlines.idAirlines = AirlineInAirport.Airlines_idAirlines
+        SELECT
+        <include refid="body"/>
+        FROM Airport a
+        LEFT JOIN AirlineInAirport aInAirP
+        ON idAirport = aInAirP.Airport_idAirport
+        LEFT JOIN Airlines Airlines
+        ON Airlines.idAirlines = aInAirP.Airlines_idAirlines
         INNER JOIN Flight
-        ON Airlines.idAirlines = Flight.Airlines_idAirlines AND Flight.idDepartureAirport = Airport.idAirport
-        WHERE idAirport = #{id}
+        ON Airlines.idAirlines = Flight.Airlines_idAirlines AND Flight.idDepartureAirport = a.idAirport
+        Left Join Airport b
+        ON b.idAirport = Flight.idArrivalAirport
+        WHERE a.idAirport = #{id}
     </select>
     <insert id="createEntity" useGeneratedKeys="true" keyProperty="id" parameterType="travelAgency.airport.Airport">
         INSERT INTO Airport (airportName, city, country, latitude, longitude)
