@@ -104,8 +104,8 @@ public class Airport {
                 possibleTrips.get(-1).addFlight(a.canFlyMeTo(destination));
             }
         }
-
         
+
 
     }
 
