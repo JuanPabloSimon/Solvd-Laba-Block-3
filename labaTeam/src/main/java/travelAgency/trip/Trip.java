@@ -19,6 +19,12 @@ public class Trip {
         this.flights = flights;
     }
 
+    public Trip(int id, Airport start, Airport finalDestination) {
+        this.id = id;
+        this.start = start;
+        this.finalDestination = finalDestination;
+    }
+
     public int getId() {
         return id;
     }

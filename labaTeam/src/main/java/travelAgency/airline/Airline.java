@@ -1,8 +1,10 @@
 package travelAgency.airline;
 
+import travelAgency.airport.Airport;
 import travelAgency.flight.Flight;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Airline {
     private int id;
@@ -33,6 +35,28 @@ public class Airline {
         this.flights = flights;
     }
 
+    public Flight canFlyMeTo(Airport destination) {
+        for (Flight flight: this.flights) {
+            if (flight.getFinalDestination().getCity().equals(destination.getCity()) &&
+                    flight.getFinalDestination().getName().equals(destination.getName()))   {
+                return flight;
+            }
+        }
+        return null;
+    }
+
+
+    public ArrayList<String> getPossibleDestinys() {
+        ArrayList<String> possibleDestinys = new ArrayList<>();
+        for (Flight flight: this.flights) {//This looks for direct flights
+            possibleDestinys.add(flight.getFinalDestination().getName());
+        }
+        return possibleDestinys;
+    }
+
+
+
+
     @Override
     public String toString() {
         return "Airline{" +
@@ -41,4 +65,7 @@ public class Airline {
                 ", flights=" + flights +
                 '}';
     }
+
+
+
 }

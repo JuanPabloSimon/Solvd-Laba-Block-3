@@ -1,6 +1,7 @@
 package travelAgency.airport;
 
 import travelAgency.airline.Airline;
+import travelAgency.trip.Trip;
 
 import java.util.ArrayList;
 
@@ -93,6 +94,25 @@ public class Airport {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public ArrayList<Trip> searchRoute(Airport destination){
+        ArrayList<Trip> possibleTrips = new ArrayList<>();
+        for (Airline a: this.airlines) {//This looks for direct flights
+            if (a.canFlyMeTo(destination) != null){
+                possibleTrips.add(new Trip(0, this, destination));
+                possibleTrips.get(-1).addFlight(a.canFlyMeTo(destination));
+            }
+        }
+        return possibleTrips;
+    }
+
+    public ArrayList<String> getPossibleDestinys(){
+        ArrayList<String> possibleDestinys = new ArrayList<>();
+        for (Airline a: this.airlines) {//This looks for direct flights
+            possibleDestinys.addAll(a.getPossibleDestinys());
+        }
+        return possibleDestinys;
     }
 
     @Override

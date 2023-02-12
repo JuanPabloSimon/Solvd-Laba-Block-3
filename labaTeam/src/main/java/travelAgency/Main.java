@@ -2,7 +2,8 @@ package travelAgency;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import travelAgency.app.Application;
+import service.mybatis.AirportService;
+import utils.ConnectionPool;
 
 import java.sql.SQLException;
 
@@ -10,14 +11,13 @@ public class Main {
     public static final Logger LOGGER = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) throws SQLException {
+        ConnectionPool.getInstance();
 
         //Services to test if the mappers are working
 
-//        AirportService airportService = new AirportService();
-//        LOGGER.info(airportService.findAll());
+        AirportService airportService = new AirportService();
+        LOGGER.info(airportService.findAll());
 
-        Application app = new Application();
-        app.run();
 
 //        FlightService flightService = new FlightService();
 //        LOGGER.info(flightService.getFlightById(2));
