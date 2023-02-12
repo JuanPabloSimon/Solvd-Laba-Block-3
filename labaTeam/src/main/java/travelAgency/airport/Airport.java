@@ -109,7 +109,8 @@ public class Airport {
                 result.append(a.toString()).append(", ");
             }
         }
-        result.append("\n], \ncoordinates=").append(latitude).append("\n}");
+        result.append("\n], \nlatitude=").append(latitude);
+        result.append("\n], \nlongitude=").append(longitude).append("\n}");
         return result.toString();
     }
 }
