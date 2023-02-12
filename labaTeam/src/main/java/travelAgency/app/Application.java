@@ -13,6 +13,7 @@ public class Application {
     private AirportService airportService;
     private List<Airport> destinations;
     private Airport departure;
+    private Airport destination;
     private Scanner scanner = new Scanner(System.in);
 
     public Application() {
@@ -28,53 +29,52 @@ public class Application {
         int choice = scanner.nextInt();
         LOGGER.info("Select your destination: ");
         selectDeparture(choice);
+        choice = scanner.nextInt();
+        selectDestination(choice);
+        LOGGER.info("Select how would you like your trip to be calculated: \n" +
+                "[0]. Cheapest Trip \n" +
+                "[1]. Fastest Trip");
+        choice = scanner.nextInt();
+        selectTypeOfFilter(choice);
     }
 
     public void selectDeparture(int choice) {
+        if (choice >= 0 && choice < destinations.size()) {
+            destinations.stream().filter(d -> destinations.indexOf(d) != choice).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
+            setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == choice).findAny().orElse(null));
+        } else {
+            throw new IllegalArgumentException("Parameter out of bounds");
+        }
+    }
+
+    public void selectDestination(int choice) {
+        if (choice >= 0 && choice < destinations.size()) {
+            destinations.stream().filter(d -> destinations.indexOf(d) == choice).forEach(e -> LOGGER.info("Destination Selected: " + e.getCity()));
+            setDestination(destinations.stream().filter(d -> destinations.indexOf(d) == choice).findAny().orElse(null));
+        } else {
+            throw new IllegalArgumentException("Parameter out of bounds");
+        }
+    }
+
+    public void selectTypeOfFilter(int choice) {
         switch (choice) {
             case 0:
-                destinations.stream().filter(d -> destinations.indexOf(d) != 0).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
-                setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == 0).findAny().orElse(null));
+                LOGGER.info("Aca arranca la logica del vuelo mas barato");
                 break;
             case 1:
-                destinations.stream().filter(d -> destinations.indexOf(d) != 1).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
-                setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == 1).findAny().orElse(null));
-                break;
-            case 2:
-                destinations.stream().filter(d -> destinations.indexOf(d) != 2).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
-                setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == 2).findAny().orElse(null));
-                break;
-            case 3:
-                destinations.stream().filter(d -> destinations.indexOf(d) != 3).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
-                setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == 3).findAny().orElse(null));
-                break;
-            case 4:
-                destinations.stream().filter(d -> destinations.indexOf(d) != 4).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
-                setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == 4).findAny().orElse(null));
-                break;
-            case 5:
-                destinations.stream().filter(d -> destinations.indexOf(d) != 5).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
-                setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == 5).findAny().orElse(null));
-                break;
-            case 6:
-                destinations.stream().filter(d -> destinations.indexOf(d) != 6).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
-                setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == 6).findAny().orElse(null));
-                break;
-            case 7:
-                destinations.stream().filter(d -> destinations.indexOf(d) != 7).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
-                setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == 7).findAny().orElse(null));
-                break;
-            case 8:
-                destinations.stream().filter(d -> destinations.indexOf(d) != 8).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
-                setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == 8).findAny().orElse(null));
-                break;
-            case 9:
-                destinations.stream().filter(d -> destinations.indexOf(d) != 9).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
-                setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == 9).findAny().orElse(null));
+                LOGGER.info("Aca arranca la logica del vuelo mas rapido");
                 break;
             default:
-                throw new IllegalArgumentException("Parameter out of bounds");
+                throw new IllegalArgumentException("Invaled choice");
         }
+    }
+
+    public Airport getDestination() {
+        return this.destination;
+    }
+
+    public void setDestination(Airport a) {
+        this.destination = a;
     }
 
     public Airport getDeparture() {
