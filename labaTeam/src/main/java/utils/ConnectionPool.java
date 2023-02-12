@@ -21,7 +21,9 @@ public class ConnectionPool implements AutoCloseable {
     private ConnectionPool() {
         LOGGER.info("Reading properties file.");
         Properties properties = new Properties();
-        try (InputStream inputStream = Files.newInputStream(Paths.get("./src/main/resources/db.properties"))) {
+        //labaTeam/src/main/resources/db.properties --Ramiro use this path
+        //./src/main/resources/db.properties
+        try (InputStream inputStream = Files.newInputStream(Paths.get("labaTeam/src/main/resources/db.properties"))) {
             properties.load(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);

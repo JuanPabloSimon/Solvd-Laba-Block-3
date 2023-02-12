@@ -4,6 +4,10 @@
 <mapper namespace="dao.IAirportDAO">
     <select id="getEntityById" resultMap="airportResultMap">
         SELECT * FROM Airport
+        LEFT JOIN AirlineInAirport
+        ON Airport.idAirport = AirlineInAirport.Airport_idAirport
+        LEFT JOIN Airlines
+        ON Airlines.idAirlines = AirlineInAirport.Airlines_idAirlines
         WHERE idAirport = #{id}
     </select>
     <insert id="createEntity" useGeneratedKeys="true" keyProperty="id" parameterType="travelAgency.airport.Airport">
@@ -29,5 +33,6 @@
            </association>-->
         <result column="latitude" property="latitude"/>
         <result column="longitude" property="longitude"/>
+        <collection property="airlines" resultMap="dao.IAirlineDAO.airlineResultMap"/>
     </resultMap>
 </mapper>

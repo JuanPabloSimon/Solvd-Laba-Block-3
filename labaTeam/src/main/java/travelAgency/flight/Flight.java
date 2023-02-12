@@ -81,6 +81,7 @@ public class Flight {
                 ", start=" + start +
                 ", finalDestination=" + finalDestination +
                 ", price=" + price +
+                ", distance=" + distance +
                 '}';
     }
 }

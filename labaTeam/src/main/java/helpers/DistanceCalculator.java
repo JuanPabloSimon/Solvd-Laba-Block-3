@@ -29,4 +29,8 @@ public class DistanceCalculator {
     private static double rad2deg(double rad) {
         return (rad * 180.0 / Math.PI);
     }
+
+    public static void main(String[] args) {
+        System.out.println(distance(32.9697, -96.80322, 29.46786, -98.53506, 'K') + " Kilometers\n");
+    }
 }
