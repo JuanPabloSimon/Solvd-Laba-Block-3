@@ -20,6 +20,7 @@
     <resultMap id="airlineResultMap" type="travelAgency.airline.Airline" autoMapping="false">
         <id column="idAirlines" property="id"/>
         <result column="airlineName" property="name"/>
+<!--        <collection property="flights" resultMap="dao.IFlightDAO.flightResultMap"/>-->
     </resultMap>
 </mapper>
 

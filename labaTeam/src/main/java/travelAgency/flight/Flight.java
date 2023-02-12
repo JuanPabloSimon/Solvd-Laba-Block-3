@@ -78,10 +78,10 @@ public class Flight {
     public String toString() {
         return "Flight{" +
                 "id=" + id +
-                ", start=" + start +
-                ", finalDestination=" + finalDestination +
-                ", price=" + price +
-                ", distance=" + distance +
+                ", \nstart=" + start.getName() + " " + start.getCity() +
+                ", \nfinalDestination=" + finalDestination.getName() + " " + finalDestination.getCity() +
+                ", \nprice=" + price +
+                ", \ndistance=" + distance +
                 '}';
     }
 }
