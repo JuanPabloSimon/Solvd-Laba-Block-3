@@ -31,6 +31,6 @@ public class DistanceCalculator {
     }
 
     public static void main(String[] args) {
-        System.out.println(distance(32.9697, -96.80322, 29.46786, -98.53506, 'K') + " Kilometers\n");
+        System.out.println(distance(-34.816848, -58.5474638280231, 40.642098, -73.789288, 'K') + " Kilometers\n");
     }
 }
