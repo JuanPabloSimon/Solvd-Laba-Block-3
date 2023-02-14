@@ -63,18 +63,18 @@ public class Application {
         }
     }
 
-    public ArrayList<Trip> searchAllTrips(){
+    public ArrayList<Trip> searchAllTrips() {
         ArrayList<Trip> trips = new ArrayList<>();
         trips.addAll(searchDirectTrip());//search direct flight
         trips.addAll(searchOneStopTrip());
         return trips;
     }
 
-    private ArrayList<Trip> searchDirectTrip(){
+    private ArrayList<Trip> searchDirectTrip() {
         return departure.searchRoute(fDestination);
     }
 
-    private ArrayList<Trip> searchOneStopTrip(){
+    private ArrayList<Trip> searchOneStopTrip() {
         Set<String> possibleFirstStop = departure.getPossibleDestinations();//search possible first stop
         possibleFirstStop.remove(fDestination.getCity());
         ArrayList<Trip> completeTrip = new ArrayList<Trip>();
@@ -87,7 +87,7 @@ public class Application {
                     if (!possibleTripSecondPart.isEmpty()) {
                         ArrayList<Trip> possibleTripFirstPart = departure.searchRoute(d);
                         possibleTripFirstPart.forEach(t -> {
-                            possibleTripSecondPart.forEach(t2-> {
+                            possibleTripSecondPart.forEach(t2 -> {
                                 completeTrip.add(new Trip(t, t2));
                             });
                         });
@@ -101,9 +101,9 @@ public class Application {
         switch (choice) {
             case 0:
                 if (!possiblesTrips.isEmpty()) {
-                possiblesTrips.sort(Comparator.comparing(t -> String.valueOf(t.getPrice())));
-                LOGGER.info("\nCheaper: " + possiblesTrips.get(0));
-                }else {
+                    possiblesTrips.sort(Comparator.comparing(t -> String.valueOf(t.getPrice())));
+                    LOGGER.info("\nCheaper: " + possiblesTrips.get(0));
+                } else {
                     LOGGER.info("No flights founded");
                 }
                 break;
@@ -111,12 +111,12 @@ public class Application {
                 if (!possiblesTrips.isEmpty()) {
                     possiblesTrips.sort(Comparator.comparing(t -> String.valueOf(t.getDistance())));
                     LOGGER.info("\nShortest: " + possiblesTrips.get(0));
-                }else {
+                } else {
                     LOGGER.info("No flights founded");
                 }
                 break;
             default:
-                throw new IllegalArgumentException("Invaled choice");
+                throw new IllegalArgumentException("Invalid choice");
         }
     }
 
@@ -126,7 +126,7 @@ public class Application {
             LOGGER.info("\n");
             LOGGER.info("You have this trips options:" + possiblesTrips.size());
             possiblesTrips.forEach(t -> {
-                if (t.getFlights().size() < 2){
+                if (t.getFlights().size() < 2) {
                     LOGGER.info("Direct");
                 } else if (t.getFlights().size() == 2) {
                     LOGGER.info((t.getFlights().size() - 1) + "Stop");
@@ -135,9 +135,9 @@ public class Application {
                 }
             });
             possiblesTrips.forEach(t -> {
-                LOGGER.info("\n"+t);
+                LOGGER.info("\n" + t);
             });
-        }else {
+        } else {
             LOGGER.info("No flights founded");
         }
     }

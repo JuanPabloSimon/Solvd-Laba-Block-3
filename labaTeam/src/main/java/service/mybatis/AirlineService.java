@@ -8,27 +8,11 @@ import org.apache.logging.log4j.Logger;
 import travelAgency.airline.Airline;
 import utils.MyBatisDaoFactory;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class AirlineService implements IAirlineDAO {
     private final static Logger LOGGER = LogManager.getLogger(AirlineService.class);
     private static final SqlSessionFactory SESSION_FACTORY = MyBatisDaoFactory.getSqlSessionFactory();
-
-
-    public Airline getAirlineById(int airlineId) throws SQLException {
-        Airline airline;
-        try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
-            IAirlineDAO airlineDAO = sqlSession.getMapper(IAirlineDAO.class);
-            airline = airlineDAO.getEntityById(airlineId);
-        }
-        return airline;
-    }
-
-
-    public Airline createAirline(Airline newAirline) throws SQLException {
-        return null;
-    }
 
     @Override
     public List<Airline> findAll() {
@@ -37,7 +21,12 @@ public class AirlineService implements IAirlineDAO {
 
     @Override
     public Airline getEntityById(int id) {
-        return null;
+        Airline airline;
+        try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
+            IAirlineDAO airlineDAO = sqlSession.getMapper(IAirlineDAO.class);
+            airline = airlineDAO.getEntityById(id);
+        }
+        return airline;
     }
 
     @Override

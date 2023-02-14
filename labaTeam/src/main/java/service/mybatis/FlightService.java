@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import travelAgency.flight.Flight;
 import utils.MyBatisDaoFactory;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class FlightService implements IFlightDAO {
@@ -17,23 +16,23 @@ public class FlightService implements IFlightDAO {
     private static final SqlSessionFactory SESSION_FACTORY = MyBatisDaoFactory.getSqlSessionFactory();
 
 
-    public Flight getFlightById(int flightId) throws SQLException {
+    @Override
+    public Flight getEntityById(int id) {
         Flight flight;
         try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
             IFlightDAO flightDAO = sqlSession.getMapper(IFlightDAO.class);
-            flight = flightDAO.getEntityById(flightId);
+            flight = flightDAO.getEntityById(id);
         }
         return flight;
-
     }
 
-
-    public Flight createFlight(Flight newFlight) throws SQLException {
+    @Override
+    public void createEntity(Flight entity) {
         try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
             IFlightDAO flightDAO = sqlSession.getMapper(IFlightDAO.class);
 
             try {
-                flightDAO.createEntity(newFlight);
+                flightDAO.createEntity(entity);
 
                 sqlSession.commit();
             } catch (Exception e) {
@@ -44,16 +43,6 @@ public class FlightService implements IFlightDAO {
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
-        return newFlight;
-    }
-
-    @Override
-    public Flight getEntityById(int id) {
-        return null;
-    }
-
-    @Override
-    public void createEntity(Flight entity) {
 
     }
 
