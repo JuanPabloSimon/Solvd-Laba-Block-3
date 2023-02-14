@@ -4,7 +4,8 @@ import travelAgency.airport.Airport;
 import travelAgency.flight.Flight;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Airline {
     private int id;
@@ -35,23 +36,24 @@ public class Airline {
         this.flights = flights;
     }
 
-    public Flight canFlyMeTo(Airport destination) {
+    public ArrayList<Flight> canFlyMeTo(Airport destination) {//All the flights that can fly you to the destination
+        ArrayList<Flight> flights = new ArrayList<>();
         for (Flight flight: this.flights) {
             if (flight.getFinalDestination().getCity().equals(destination.getCity()) &&
                     flight.getFinalDestination().getName().equals(destination.getName()))   {
-                return flight;
+                flights.add(flight);
             }
         }
-        return null;
+        return flights;
     }
 
 
-    public ArrayList<String> getPossibleDestinys() {
-        ArrayList<String> possibleDestinys = new ArrayList<>();
+    public Set<String> getPossibleDestinations() {
+        Set<String> possibleDestinations = new HashSet<>();
         for (Flight flight: this.flights) {//This looks for direct flights
-            possibleDestinys.add(flight.getFinalDestination().getCity());
+            possibleDestinations.add(flight.getFinalDestination().getCity());
         }
-        return possibleDestinys;
+        return possibleDestinations;
     }
 
 

@@ -1,11 +1,19 @@
 package travelAgency.airport;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import travelAgency.airline.Airline;
+import travelAgency.app.Application;
+import travelAgency.flight.Flight;
 import travelAgency.trip.Trip;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Airport {
+    private static final Logger LOGGER = LogManager.getLogger(Airport.class);
+
     private int id;
     private String name;
     private String country;
@@ -96,24 +104,26 @@ public class Airport {
         this.longitude = longitude;
     }
 
-    public ArrayList<Trip> searchRoute(Airport destination){
+    public ArrayList<Trip> searchRoute(Airport destination){//gives you a direct trip to the destination
         ArrayList<Trip> possibleTrips = new ArrayList<>();
-        for (Airline a: this.airlines) {//This looks for direct flights
-            if (a.canFlyMeTo(destination) != null){
+        for (Airline a: this.airlines) {
+            for (Flight f : a.canFlyMeTo(destination)) {
                 possibleTrips.add(new Trip(0, this, destination));
-                possibleTrips.get(possibleTrips.size() - 1).addFlight(a.canFlyMeTo(destination));
+                possibleTrips.get(possibleTrips.size() - 1).addFlight(f);
             }
         }
         return possibleTrips;
     }
 
-    public ArrayList<String> getPossibleDestinys(){
-        ArrayList<String> possibleDestinys = new ArrayList<>();
-        for (Airline a: this.airlines) {//This looks for direct flights
-            possibleDestinys.addAll(a.getPossibleDestinys());
+    public Set<String> getPossibleDestinations(){//This looks for direct flights
+        Set<String> possibleDestinations2 = new HashSet<>();
+        for (Airline a: this.airlines) {
+            possibleDestinations2.addAll(a.getPossibleDestinations());
         }
-        return possibleDestinys;
+        return possibleDestinations2;
     }
+
+
 
     @Override
     public String toString() {

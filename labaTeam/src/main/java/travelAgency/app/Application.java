@@ -4,9 +4,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service.mybatis.AirportService;
 import travelAgency.airport.Airport;
+import travelAgency.trip.Trip;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Application {
     private static final Logger LOGGER = LogManager.getLogger(Application.class);
@@ -59,10 +62,18 @@ public class Application {
     public void selectTypeOfFilter(int choice) {
         switch (choice) {
             case 0:
-                LOGGER.info("Aca arranca la logica del vuelo mas barato");
+                LOGGER.info("Cheapest Flight Logic");
+                ArrayList<Trip> possiblesTrips = departure.searchRoute(destination);
+                if (!possiblesTrips.isEmpty()) {
+                    possiblesTrips.forEach(t -> {
+                        LOGGER.info("\n"+t);
+                    });
+                }else {
+                    LOGGER.info("No direct flight found");
+                }
                 break;
             case 1:
-                LOGGER.info("Aca arranca la logica del vuelo mas rapido");
+                LOGGER.info("Shortest Flight Logic");
                 break;
             default:
                 throw new IllegalArgumentException("Invaled choice");
