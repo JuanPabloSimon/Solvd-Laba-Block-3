@@ -99,7 +99,7 @@ public class Application {
                 if (t.getFlights().size() < 2){
                     LOGGER.info("Direct");
                 } else if (t.getFlights().size() == 2) {
-                    LOGGER.info("\n" + (t.getFlights().size() - 1) + "Stop");
+                    LOGGER.info((t.getFlights().size() - 1) + "Stop");
                 } else {
                     LOGGER.info("It must not have more that 2 flights, but there's a problem");
                 }
