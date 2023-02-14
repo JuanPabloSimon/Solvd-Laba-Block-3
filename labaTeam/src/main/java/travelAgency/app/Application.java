@@ -6,17 +6,14 @@ import service.mybatis.AirportService;
 import travelAgency.airport.Airport;
 import travelAgency.trip.Trip;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Application {
     private static final Logger LOGGER = LogManager.getLogger(Application.class);
     private AirportService airportService;
     private List<Airport> destinations;
     private Airport departure;
-    private Airport destination;
+    private Airport fDestination;
     private Scanner scanner = new Scanner(System.in);
 
     public Application() {
@@ -53,7 +50,7 @@ public class Application {
     public void selectDestination(int choice) {
         if (choice >= 0 && choice < destinations.size()) {
             destinations.stream().filter(d -> destinations.indexOf(d) == choice).forEach(e -> LOGGER.info("Destination Selected: " + e.getCity()));
-            setDestination(destinations.stream().filter(d -> destinations.indexOf(d) == choice).findAny().orElse(null));
+            setfDestination(destinations.stream().filter(d -> destinations.indexOf(d) == choice).findAny().orElse(null));
         } else {
             throw new IllegalArgumentException("Parameter out of bounds");
         }
@@ -63,7 +60,31 @@ public class Application {
         switch (choice) {
             case 0:
                 LOGGER.info("Cheapest Flight Logic");
-                ArrayList<Trip> possiblesTrips = departure.searchRoute(destination);
+                ArrayList<Trip> possiblesTrips = departure.searchRoute(fDestination);//search direct flight
+
+
+                Set<String> possibleFirstStop = departure.getPossibleDestinations();//search possible first stop
+                possibleFirstStop.remove(fDestination.getCity());
+
+                //search for a trip with a stop
+                destinations.stream()
+                        .filter(d -> possibleFirstStop.contains(d.getCity()))
+                        .forEach(d -> {
+//                            LOGGER.info("You can also go to Paris from:");
+//                            LOGGER.info(d.getCity());
+                            ArrayList<Trip> possiblesTripsOneStop = d.searchRoute(fDestination);
+                            if (!possiblesTripsOneStop.isEmpty()) {
+                                ArrayList<Trip> possiblesPreviousTripsOneStop = departure.searchRoute(d);
+                                possiblesPreviousTripsOneStop.forEach(t -> {
+                                    possiblesTripsOneStop.forEach(t2-> {
+                                        t.addFlightsOfThisTrip(t2);
+                                        t.setFinalDestination(t2.getFinalDestination());
+                                    });
+                                });
+                                possiblesTrips.addAll(possiblesPreviousTripsOneStop);
+                            }
+                        });
+
                 if (!possiblesTrips.isEmpty()) {
                     possiblesTrips.forEach(t -> {
                         LOGGER.info("\n"+t);
@@ -80,12 +101,12 @@ public class Application {
         }
     }
 
-    public Airport getDestination() {
-        return this.destination;
+    public Airport getfDestination() {
+        return this.fDestination;
     }
 
-    public void setDestination(Airport a) {
-        this.destination = a;
+    public void setfDestination(Airport a) {
+        this.fDestination = a;
     }
 
     public Airport getDeparture() {

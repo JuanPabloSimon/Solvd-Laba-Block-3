@@ -5,7 +5,6 @@ import travelAgency.airport.AirportLocation;
 import travelAgency.flight.Flight;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class Trip {
     private int id;
@@ -75,6 +74,10 @@ public class Trip {
 
     public double getDistance(){
         return this.flights.stream().mapToDouble(Flight::getDistance).sum();
+    }
+
+    public void addFlightsOfThisTrip(Trip previousTrip){
+        this.flights.addAll(previousTrip.getFlights());
     }
 
     @Override
