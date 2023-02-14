@@ -3,7 +3,6 @@ package travelAgency.airport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import travelAgency.airline.Airline;
-import travelAgency.app.Application;
 import travelAgency.flight.Flight;
 import travelAgency.trip.Trip;
 
@@ -104,9 +103,9 @@ public class Airport {
         this.longitude = longitude;
     }
 
-    public ArrayList<Trip> searchRoute(Airport destination){//gives you a direct trip to the destination
+    public ArrayList<Trip> searchRoute(Airport destination) {  //gives you a direct trip to the destination
         ArrayList<Trip> possibleTrips = new ArrayList<>();
-        for (Airline a: this.airlines) {
+        for (Airline a : this.airlines) {
             for (Flight f : a.canFlyMeTo(destination)) {
                 possibleTrips.add(new Trip(this, destination));
                 possibleTrips.get(possibleTrips.size() - 1).addFlight(f);
@@ -115,14 +114,13 @@ public class Airport {
         return possibleTrips;
     }
 
-    public Set<String> getPossibleDestinations(){//This looks for direct flights
+    public Set<String> getPossibleDestinations() {  //This looks for direct flights
         Set<String> possibleDestinations2 = new HashSet<>();
-        for (Airline a: this.airlines) {
+        for (Airline a : this.airlines) {
             possibleDestinations2.addAll(a.getPossibleDestinations());
         }
         return possibleDestinations2;
     }
-
 
 
     @Override

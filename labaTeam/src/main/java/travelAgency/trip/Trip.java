@@ -28,7 +28,7 @@ public class Trip {
         this.flights = flights;
     }
 
-    public Trip( Airport start, Airport finalDestination) {
+    public Trip(Airport start, Airport finalDestination) {
         this.id = ++tripId;
         this.start = new AirportLocation(start);
         this.finalDestination = new AirportLocation(finalDestination);
@@ -49,7 +49,7 @@ public class Trip {
     }
 
     public void setId(int id) {
-        if (id > 0){
+        if (id > 0) {
             this.id = id;
         }
     }
@@ -86,15 +86,15 @@ public class Trip {
         this.flights.remove(flight);
     }
 
-    public double getPrice(){
+    public double getPrice() {
         return this.flights.stream().mapToDouble(Flight::getPrice).sum();
     }
 
-    public double getDistance(){
-        return Math.round(this.flights.stream().mapToDouble(Flight::getDistance).sum()*100.0)/100.0;
+    public double getDistance() {
+        return Math.round(this.flights.stream().mapToDouble(Flight::getDistance).sum() * 100.0) / 100.0;
     }
 
-    public void addFlightsOfThisTrip(Trip previousTrip){
+    public void addFlightsOfThisTrip(Trip previousTrip) {
         this.flights.addAll(previousTrip.getFlights());
     }
 
