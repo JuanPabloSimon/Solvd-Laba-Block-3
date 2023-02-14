@@ -108,7 +108,7 @@ public class Airport {
         ArrayList<Trip> possibleTrips = new ArrayList<>();
         for (Airline a: this.airlines) {
             for (Flight f : a.canFlyMeTo(destination)) {
-                possibleTrips.add(new Trip(0, this, destination));
+                possibleTrips.add(new Trip(this, destination));
                 possibleTrips.get(possibleTrips.size() - 1).addFlight(f);
             }
         }

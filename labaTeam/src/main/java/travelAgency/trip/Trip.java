@@ -7,34 +7,36 @@ import travelAgency.flight.Flight;
 import java.util.ArrayList;
 
 public class Trip {
+    private static int tripId = 0;
+
     private int id;
     private AirportLocation start;
     private AirportLocation finalDestination;
     private ArrayList<Flight> flights;
 
-    public Trip(int id, Airport start, Airport finalDestination, ArrayList<Flight> flights) {
-        this.id = id;
+    public Trip(Airport start, Airport finalDestination, ArrayList<Flight> flights) {
+        this.id = ++tripId;
         this.start = new AirportLocation(start);
         this.finalDestination = new AirportLocation(finalDestination);
         this.flights = flights;
     }
 
-    public Trip(int id, AirportLocation start, AirportLocation finalDestination, ArrayList<Flight> flights) {
-        this.id = id;
+    public Trip(AirportLocation start, AirportLocation finalDestination, ArrayList<Flight> flights) {
+        this.id = ++tripId;
         this.start = start;
         this.finalDestination = finalDestination;
         this.flights = flights;
     }
 
-    public Trip(int id, Airport start, Airport finalDestination) {
-        this.id = id;
+    public Trip( Airport start, Airport finalDestination) {
+        this.id = ++tripId;
         this.start = new AirportLocation(start);
         this.finalDestination = new AirportLocation(finalDestination);
         this.flights = new ArrayList<>();
     }
 
     public Trip(Trip t, Trip t2) {
-        this.id = t.getId();
+        this.id = ++tripId;
         this.start = t.getStart();
         this.finalDestination = t2.getFinalDestination();
         this.flights = new ArrayList<>();

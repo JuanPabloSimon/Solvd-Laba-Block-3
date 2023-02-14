@@ -36,6 +36,13 @@ public class Application {
                 "[1]. Fastest Trip");
         choice = scanner.nextInt();
         selectTypeOfFilter(choice);
+        LOGGER.info("Would you like to see all possible trip options and compare them manually?: \n" +
+                "[0]. No \n" +
+                "[1]. Yes");
+        choice = scanner.nextInt();
+        if (choice == 1) {
+            printAllTrips();
+        }
     }
 
     public void selectDeparture(int choice) {
@@ -90,7 +97,30 @@ public class Application {
     }
 
     public void selectTypeOfFilter(int choice) {
+        ArrayList<Trip> possiblesTrips = searchAllTrips();
+        switch (choice) {
+            case 0:
+                if (!possiblesTrips.isEmpty()) {
+                possiblesTrips.sort(Comparator.comparing(t -> String.valueOf(t.getPrice())));
+                LOGGER.info("\nCheaper: " + possiblesTrips.get(0));
+                }else {
+                    LOGGER.info("No flights founded");
+                }
+                break;
+            case 1:
+                if (!possiblesTrips.isEmpty()) {
+                    possiblesTrips.sort(Comparator.comparing(t -> String.valueOf(t.getDistance())));
+                    LOGGER.info("\nShortest: " + possiblesTrips.get(0));
+                }else {
+                    LOGGER.info("No flights founded");
+                }
+                break;
+            default:
+                throw new IllegalArgumentException("Invaled choice");
+        }
+    }
 
+    public void printAllTrips() {
         ArrayList<Trip> possiblesTrips = searchAllTrips();
         if (!possiblesTrips.isEmpty()) {
             LOGGER.info("\n");
@@ -109,17 +139,6 @@ public class Application {
             });
         }else {
             LOGGER.info("No flights founded");
-        }
-
-        switch (choice) {
-            case 0:
-                LOGGER.info("Cheapest Flight Logic");
-                break;
-            case 1:
-                LOGGER.info("Shortest Flight Logic");
-                break;
-            default:
-                throw new IllegalArgumentException("Invaled choice");
         }
     }
 
