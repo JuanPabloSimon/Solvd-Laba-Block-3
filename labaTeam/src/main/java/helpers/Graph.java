@@ -39,4 +39,8 @@ public class Graph {
             eV1.remove(destination);
     }
 
+    Set<String> getAdjVertices(String label) {
+        return adjVertices.get(label);
+    }
+
 }
