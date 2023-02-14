@@ -1,5 +1,6 @@
 package travelAgency.app;
 
+import helpers.Graph;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import service.mybatis.AirportService;
@@ -43,6 +44,23 @@ public class Application {
         if (choice == 1) {
             printAllTrips();
         }
+
+        createGraphStructure();
+    }
+
+    private void createGraphStructure() {
+        Graph graph = new Graph();
+
+        destinations.forEach(d -> {
+            graph.addVertex(d.getCity());
+            d.getPossibleDestinations().forEach(c -> {
+                graph.addEdge(d.getCity(), c);
+            });
+        });
+
+        graph.getAdjVertices().entrySet().forEach(entry -> {
+            LOGGER.info("From: " + entry.getKey() + " You can go to: " + entry.getValue());
+        });
     }
 
     public void selectDeparture(int choice) {
