@@ -58,8 +58,51 @@ public class Application {
             });
         });
 
-        graph.getAdjVertices().entrySet().forEach(entry -> {
-            LOGGER.info("From: " + entry.getKey() + " You can go to: " + entry.getValue());
+        LOGGER.info("Paths using Graph From: " + departure.getCity() + "| To: " + fDestination.getCity());
+        ArrayList<ArrayList<String>> paths = new ArrayList<>();
+
+        Set<String> possibleFirstStop = departure.getPossibleDestinations();//search possible first stop
+        if (possibleFirstStop.contains(fDestination.getCity())) {
+            ArrayList<String> tmp = new ArrayList<>();
+            tmp.add(departure.getCity());
+            tmp.add(fDestination.getCity());
+            paths.add(tmp);
+        }
+        Set<String> possibleSecondStop = new HashSet<>();
+        Set<String> visited = new HashSet<>();
+        visited.add(departure.getCity());
+        visited.add(fDestination.getCity());
+
+        possibleFirstStop.forEach(pStop -> {
+            visited.add(pStop);
+            if (graph.getAdjVertices(pStop).contains(fDestination.getCity())) {
+                ArrayList<String> tmp = new ArrayList<>();
+                tmp.add(departure.getCity());
+                tmp.add(pStop);
+                tmp.add(fDestination.getCity());
+                paths.add(tmp);
+            }
+            possibleSecondStop.addAll(graph.getAdjVertices(pStop));
+            possibleSecondStop.removeAll(visited);
+        });
+
+        possibleFirstStop.forEach(pStop -> {
+            possibleSecondStop.forEach(pSecondStop -> {
+                if (graph.getAdjVertices(pStop).contains(pSecondStop) && graph.getAdjVertices(pSecondStop).contains(fDestination.getCity())) {
+                    ArrayList<String> tmp = new ArrayList<>();
+                    tmp.add(departure.getCity());
+                    tmp.add(pStop);
+                    tmp.add(pSecondStop);
+                    tmp.add(fDestination.getCity());
+                    paths.add(tmp);
+                }
+            });
+        });
+
+
+        paths.forEach(p -> {
+            LOGGER.info("*****");
+            LOGGER.info(p);
         });
     }
 
