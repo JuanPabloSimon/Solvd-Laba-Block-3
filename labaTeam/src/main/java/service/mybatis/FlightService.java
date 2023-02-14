@@ -47,6 +47,15 @@ public class FlightService implements IFlightDAO {
     }
 
     @Override
+    public List<Flight> findAll() {
+        try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
+            IFlightDAO flightDAO = sqlSession.getMapper(IFlightDAO.class);
+            List<Flight> flights = flightDAO.findAll();
+            return flights;
+        }
+    }
+
+    @Override
     public void updateEntity(Flight entity) {
 
     }
@@ -54,10 +63,5 @@ public class FlightService implements IFlightDAO {
     @Override
     public void removeById(int id) {
 
-    }
-
-    @Override
-    public List<Flight> findAll() {
-        return null;
     }
 }
