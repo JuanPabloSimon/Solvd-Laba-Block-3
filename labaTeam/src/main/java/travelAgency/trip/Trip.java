@@ -19,11 +19,27 @@ public class Trip {
         this.flights = flights;
     }
 
+    public Trip(int id, AirportLocation start, AirportLocation finalDestination, ArrayList<Flight> flights) {
+        this.id = id;
+        this.start = start;
+        this.finalDestination = finalDestination;
+        this.flights = flights;
+    }
+
     public Trip(int id, Airport start, Airport finalDestination) {
         this.id = id;
         this.start = new AirportLocation(start);
         this.finalDestination = new AirportLocation(finalDestination);
         this.flights = new ArrayList<>();
+    }
+
+    public Trip(Trip t, Trip t2) {
+        this.id = t.getId();
+        this.start = t.getStart();
+        this.finalDestination = t2.getFinalDestination();
+        this.flights = new ArrayList<>();
+        this.flights.addAll(t.getFlights());
+        this.flights.addAll(t2.getFlights());
     }
 
     public int getId() {
@@ -73,7 +89,7 @@ public class Trip {
     }
 
     public double getDistance(){
-        return this.flights.stream().mapToDouble(Flight::getDistance).sum();
+        return Math.round(this.flights.stream().mapToDouble(Flight::getDistance).sum()*100.0)/100.0;
     }
 
     public void addFlightsOfThisTrip(Trip previousTrip){
@@ -84,9 +100,11 @@ public class Trip {
     public String toString() {
         return "Trip{" +
                 "id=" + id +
-                ", start=" + start +
-                ", finalDestination=" + finalDestination +
-                ", flights=" + flights +
+                ", \nstart=" + start +
+                ", \nfinalDestination=" + finalDestination +
+                ", \nflights=" + flights +
+                ", \nprice=" + getPrice() +
+                ", \ntotal distance=" + getDistance() +
                 '}';
     }
 }

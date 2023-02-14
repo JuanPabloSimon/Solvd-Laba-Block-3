@@ -56,42 +56,64 @@ public class Application {
         }
     }
 
+    public ArrayList<Trip> searchAllTrips(){
+        ArrayList<Trip> trips = new ArrayList<>();
+        trips.addAll(searchDirectTrip());//search direct flight
+        trips.addAll(searchOneStopTrip());
+        return trips;
+    }
+
+    private ArrayList<Trip> searchDirectTrip(){
+        return departure.searchRoute(fDestination);
+    }
+
+    private ArrayList<Trip> searchOneStopTrip(){
+        Set<String> possibleFirstStop = departure.getPossibleDestinations();//search possible first stop
+        possibleFirstStop.remove(fDestination.getCity());
+        ArrayList<Trip> completeTrip = new ArrayList<Trip>();
+        //search for a trip with a stop
+        destinations.stream()
+                .filter(d -> possibleFirstStop.contains(d.getCity()))
+                .forEach(d -> {//You can also go to Your final Destination from:
+                    ArrayList<Trip> possibleTripSecondPart = d.searchRoute(fDestination);
+
+                    if (!possibleTripSecondPart.isEmpty()) {
+                        ArrayList<Trip> possibleTripFirstPart = departure.searchRoute(d);
+                        possibleTripFirstPart.forEach(t -> {
+                            possibleTripSecondPart.forEach(t2-> {
+                                completeTrip.add(new Trip(t, t2));
+                            });
+                        });
+                    }
+                });
+        return completeTrip;
+    }
+
     public void selectTypeOfFilter(int choice) {
+
+        ArrayList<Trip> possiblesTrips = searchAllTrips();
+        if (!possiblesTrips.isEmpty()) {
+            LOGGER.info("\n");
+            LOGGER.info("You have this trips options:" + possiblesTrips.size());
+            possiblesTrips.forEach(t -> {
+                if (t.getFlights().size() < 2){
+                    LOGGER.info("Direct");
+                } else if (t.getFlights().size() == 2) {
+                    LOGGER.info("\n" + (t.getFlights().size() - 1) + "Stop");
+                } else {
+                    LOGGER.info("It must not have more that 2 flights, but there's a problem");
+                }
+            });
+            possiblesTrips.forEach(t -> {
+                LOGGER.info("\n"+t);
+            });
+        }else {
+            LOGGER.info("No flights founded");
+        }
+
         switch (choice) {
             case 0:
                 LOGGER.info("Cheapest Flight Logic");
-                ArrayList<Trip> possiblesTrips = departure.searchRoute(fDestination);//search direct flight
-
-
-                Set<String> possibleFirstStop = departure.getPossibleDestinations();//search possible first stop
-                possibleFirstStop.remove(fDestination.getCity());
-
-                //search for a trip with a stop
-                destinations.stream()
-                        .filter(d -> possibleFirstStop.contains(d.getCity()))
-                        .forEach(d -> {
-//                            LOGGER.info("You can also go to Paris from:");
-//                            LOGGER.info(d.getCity());
-                            ArrayList<Trip> possiblesTripsOneStop = d.searchRoute(fDestination);
-                            if (!possiblesTripsOneStop.isEmpty()) {
-                                ArrayList<Trip> possiblesPreviousTripsOneStop = departure.searchRoute(d);
-                                possiblesPreviousTripsOneStop.forEach(t -> {
-                                    possiblesTripsOneStop.forEach(t2-> {
-                                        t.addFlightsOfThisTrip(t2);
-                                        t.setFinalDestination(t2.getFinalDestination());
-                                    });
-                                });
-                                possiblesTrips.addAll(possiblesPreviousTripsOneStop);
-                            }
-                        });
-
-                if (!possiblesTrips.isEmpty()) {
-                    possiblesTrips.forEach(t -> {
-                        LOGGER.info("\n"+t);
-                    });
-                }else {
-                    LOGGER.info("No direct flight found");
-                }
                 break;
             case 1:
                 LOGGER.info("Shortest Flight Logic");
