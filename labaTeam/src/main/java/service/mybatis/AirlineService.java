@@ -16,7 +16,11 @@ public class AirlineService implements IAirlineDAO {
 
     @Override
     public List<Airline> findAll() {
-        return null;
+        try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
+            IAirlineDAO airlineDAO = sqlSession.getMapper(IAirlineDAO.class);
+            List<Airline> airlines = airlineDAO.findAll();
+            return airlines;
+        }
     }
 
     @Override
@@ -31,7 +35,21 @@ public class AirlineService implements IAirlineDAO {
 
     @Override
     public void createEntity(Airline entity) {
+        try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
+            IAirlineDAO airlineDAO = sqlSession.getMapper(IAirlineDAO.class);
 
+            try {
+                airlineDAO.createEntity(entity);
+
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                LOGGER.error(e.getMessage(), e);
+            }
+
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 
     @Override

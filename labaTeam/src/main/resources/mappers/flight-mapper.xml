@@ -12,8 +12,7 @@
         JOIN Airport aa ON f.idArrivalAirport = aa.idAirport
         WHERE f.idFlight = #{id}
     </select>
-
-
+    
     <insert id="createEntity" useGeneratedKeys="true" keyProperty="id" parameterType="travelAgency.flight.Flight">
         INSERT INTO Flight (price, Airlines_idAirlines, IdDepartureAirport, idArrivalAirport)
         VALUES (#{price}, #{start.airlines[0].id}, #{start.id}, #{finalDestination.id})

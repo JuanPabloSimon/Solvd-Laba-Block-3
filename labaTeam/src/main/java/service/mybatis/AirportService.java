@@ -36,16 +36,50 @@ public class AirportService implements IAirportDAO {
 
     @Override
     public void createEntity(Airport entity) {
+        try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
+            IAirportDAO airportDAO = sqlSession.getMapper(IAirportDAO.class);
 
+            try {
+                airportDAO.createEntity(entity);
+
+                sqlSession.commit();
+            } catch (Exception e) {
+                sqlSession.rollback();
+                LOGGER.error(e.getMessage(), e);
+            }
+
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
 
     @Override
     public void updateEntity(Airport entity) {
-
+        try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
+            IAirportDAO airportDAO = sqlSession.getMapper(IAirportDAO.class);
+            try {
+                airportDAO.updateEntity(entity);
+                sqlSession.commit();
+                LOGGER.info("Airport Updated successfully");
+            } catch (Exception e) {
+                LOGGER.info("Error Updating");
+                sqlSession.rollback();
+                LOGGER.info("Session rollback");
+            }
+        }
     }
 
     @Override
     public void removeById(int id) {
-
+        try (SqlSession sqlSession = SESSION_FACTORY.openSession()) {
+            if (id > 0) {
+                IAirportDAO airportDAO = sqlSession.getMapper(IAirportDAO.class);
+                airportDAO.removeById(id);
+                LOGGER.info("Airport Deleted");
+                sqlSession.commit();
+            }
+        } catch (Exception e) {
+            LOGGER.info("Error Deleting");
+        }
     }
 }
