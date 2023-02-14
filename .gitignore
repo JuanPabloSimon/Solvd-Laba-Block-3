@@ -25,6 +25,8 @@ bin/*/
 /.idea/
 /resources/
 /logs/
+logs/*
+*/logs
 /labaTeam/musichall.iml
 /labaTeam/target
 /target/
