@@ -8,9 +8,11 @@ import travelAgency.airport.Airport;
 import travelAgency.trip.Trip;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Application {
     private static final Logger LOGGER = LogManager.getLogger(Application.class);
+    private static final int MAX_TRIP_STEPS = 4;
     private AirportService airportService;
     private List<Airport> destinations;
     private Airport departure;
@@ -49,8 +51,10 @@ public class Application {
 
     private ArrayList<Trip> searchAllTripsWithGraph() {
         ArrayList<List<String>> paths = createPossibleTripsBetweenTwoCities(departure.getCity(), fDestination.getCity());
+        paths = paths.stream().filter(p -> p.size() <= MAX_TRIP_STEPS).collect(Collectors.toCollection(ArrayList::new));
         return buildAllTrips(paths);
     }
+
     public ArrayList<List<String>> createPossibleTripsBetweenTwoCities(String city1, String city2) {
         Graph<String> graph = new Graph<>();
         destinations.forEach(d -> {
@@ -64,13 +68,12 @@ public class Application {
         List<String> path = new ArrayList<>();
         // Call recursive utility
         Set<String> visited = new HashSet<>();
-        printAllPathsUtil(city1, city2, visited,paths, path, graph);
-       return paths;
+        printAllPathsUtil(city1, city2, visited, paths, path, graph);
+        return paths;
     }
 
 
-
-    private void printAllPathsUtil(String city1, String city2, Set<String> visited, ArrayList<List<String>> paths, List<String> path, Graph graph){
+    private void printAllPathsUtil(String city1, String city2, Set<String> visited, ArrayList<List<String>> paths, List<String> path, Graph graph) {
 
         if (city1.equals(city2)) {
             LinkedList<String> path1 = new LinkedList<>(path);
@@ -79,20 +82,16 @@ public class Application {
             return;
         }
         visited.add(city1);
-        for (Object c : graph.getAdjVertices(city1)){
+        for (Object c : graph.getAdjVertices(city1)) {
             String d = (String) c;
-            if(!visited.contains(d)){
+            if (!visited.contains(d)) {
                 path.add(d);
-                printAllPathsUtil(d, city2,visited,paths, path, graph);
+                printAllPathsUtil(d, city2, visited, paths, path, graph);
                 path.remove(d);
             }
         }
         visited.remove(city1);
     }
-
-
-
-
 
 
 //    private ArrayList<ArrayList<String>> createPathWithGraph() {
