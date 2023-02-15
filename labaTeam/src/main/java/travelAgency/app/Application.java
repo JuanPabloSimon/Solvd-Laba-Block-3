@@ -51,6 +51,47 @@ public class Application {
         ArrayList<ArrayList<String>> paths = createPathWithGraph();
         return buildAllTrips(paths);
     }
+    public void createPossibleTripsBetweenTwoCities(String city1, String city2) {
+        Graph<String> graph = new Graph<>();
+        destinations.forEach(d -> {
+            graph.addVertex(d.getCity());
+            d.getPossibleDestinations().forEach(c -> {
+                graph.addEdge(d.getCity(), c);
+            });
+        });
+
+        ArrayList<String> path = new ArrayList<>();
+        // Call recursive utility
+        Set<String> visited = new HashSet<>();
+        printAllPathsUtil(city1, city2, visited,path, graph);
+
+    }
+
+
+
+    private void printAllPathsUtil(String city1, String city2, Set<String> visited,ArrayList<String> path, Graph graph ){
+
+        if (city1.equals(city2)) {
+            LOGGER.info(path);
+            return;
+        }
+        visited.add(city1);
+        for (Object c : graph.getAdjVertices(city1)){
+            String d = (String) c;
+            if(!visited.contains(d)){
+                path.add(d);
+                printAllPathsUtil(d, city2,visited, path, graph);
+                path.remove(d);
+            }
+
+        }
+        visited.remove(city1);
+    }
+
+
+
+
+
 
     private ArrayList<ArrayList<String>> createPathWithGraph() {
         Graph<String> graph = new Graph<>();
