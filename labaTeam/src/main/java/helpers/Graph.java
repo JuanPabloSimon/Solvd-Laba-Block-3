@@ -1,27 +1,24 @@
 package helpers;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-public class Graph {
-    private Map<String, Set<String>> adjVertices;
+public class Graph<T> {
+    private Map<String, Set<T>> adjVertices;
 
     public Graph() {
         this.adjVertices = new HashMap<>();
     }
 
-    public Map<String, Set<String>> getAdjVertices() {
+    public Map<String, Set<T>> getAdjVertices() {
         return adjVertices;
     }
 
-    public void setAdjVertices(Map<String, Set<String>> adjVertices) {
+    public void setAdjVertices(Map<String, Set<T>> adjVertices) {
         this.adjVertices = adjVertices;
     }
 
     public void addVertex(String label) {
-        adjVertices.putIfAbsent(label, new HashSet<String>());
+        adjVertices.putIfAbsent(label, new HashSet<T>());
     }
 
     public void removeVertex(String label) {
@@ -29,17 +26,17 @@ public class Graph {
         adjVertices.remove(label);
     }
 
-    public void addEdge(String start, String destination) {
+    public void addEdge(String start, T destination) {
         adjVertices.get(start).add(destination);
     }
 
-    public void removeEdge(String start, String destination) {
-        Set<String> eV1 = adjVertices.get(start);
+    public void removeEdge(String start, T destination) {
+        Set<T> eV1 = adjVertices.get(start);
         if (eV1 != null)
             eV1.remove(destination);
     }
 
-    public Set<String> getAdjVertices(String label) {
+    public Set<T> getAdjVertices(String label) {
         return adjVertices.get(label);
     }
 
