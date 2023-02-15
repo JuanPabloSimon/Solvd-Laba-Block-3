@@ -100,13 +100,18 @@ public class Trip {
 
     @Override
     public String toString() {
-        return "Trip{" +
+        StringBuilder result = new StringBuilder("Trip{" +
                 "id=" + id +
-                ", \nstart=" + start +
-                ", \nfinalDestination=" + finalDestination +
-                ", \nflights=" + flights +
-                ", \nprice=" + getPrice() +
-                ", \ntotal distance=" + getDistance() +
-                '}';
+                ", \nstart = " + start +
+                ", \nfinalDestination = " + finalDestination +
+                ", \nflights = [");
+        for (Flight f : this.flights) {
+            result.append("\n");
+            result.append("\t- ").append(f.toString()).append(", ");
+        }
+        result.append("], \nprice=" + getPrice());
+        result.append(", \ntotal distance=" + getDistance());
+        result.append('}');
+        return result.toString();
     }
 }

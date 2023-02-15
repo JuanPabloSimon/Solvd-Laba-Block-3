@@ -19,7 +19,7 @@ public class Flight {
         setDistance();
     }
 
-    public Flight(){
+    public Flight() {
 
     }
 
@@ -75,12 +75,11 @@ public class Flight {
 
     @Override
     public String toString() {
-        return "Flight{" +
-                "id=" + id +
-                ", \nstart=" + start.getName() + " " + start.getCity() +
-                ", \nfinalDestination=" + finalDestination.getName() + " " + finalDestination.getCity() +
-                ", \nprice=" + price +
-                ", \ndistance=" + Math.round(distance*100.0)/100.0 + " Km" +
+        return "Flight{" + "id=" + id +
+                ", \n\t\tstart=" + start.getName() + " " + start.getCity() +
+                ", \n\t\tfinalDestination=" + finalDestination.getName() + " " + finalDestination.getCity() +
+                ", \n\t\tprice=" + price +
+                ", \n\t\tdistance=" + Math.round(distance * 100.0) / 100.0 + " Km" +
                 '}';
     }
 }
