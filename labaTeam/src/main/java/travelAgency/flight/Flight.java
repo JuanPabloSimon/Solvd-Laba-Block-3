@@ -1,7 +1,6 @@
 package travelAgency.flight;
 
 import helpers.DistanceCalculator;
-import travelAgency.airport.Airport;
 import travelAgency.airport.AirportLocation;
 
 public class Flight {

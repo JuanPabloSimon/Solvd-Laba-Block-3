@@ -92,9 +92,9 @@ public class Application {
     }
 
     public ArrayList<Trip> buildAllTrips(ArrayList<List<String>> paths) {
-        LOGGER.info(":::::::PATHS::::");
+        LOGGER.info("::::::PATHS::::::");
         paths.forEach(LOGGER::info);
-        LOGGER.info(":::::::::::");
+        LOGGER.info(":::::::::::::::::");
         ArrayList<Trip> completeTrips = new ArrayList<>();
         paths.forEach(p -> {
             ArrayList<Trip> trip = getAirport(p.get(0)).searchRoute(getAirport(p.get(1)));//All direct flights
