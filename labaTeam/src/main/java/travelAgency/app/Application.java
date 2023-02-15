@@ -48,10 +48,10 @@ public class Application {
     }
 
     private ArrayList<Trip> searchAllTripsWithGraph() {
-        ArrayList<ArrayList<String>> paths = createPathWithGraph();
+        ArrayList<List<String>> paths = createPossibleTripsBetweenTwoCities(departure.getCity(), fDestination.getCity());
         return buildAllTrips(paths);
     }
-    public void createPossibleTripsBetweenTwoCities(String city1, String city2) {
+    public ArrayList<List<String>> createPossibleTripsBetweenTwoCities(String city1, String city2) {
         Graph<String> graph = new Graph<>();
         destinations.forEach(d -> {
             graph.addVertex(d.getCity());
@@ -60,19 +60,22 @@ public class Application {
             });
         });
 
-        ArrayList<String> path = new ArrayList<>();
+        ArrayList<List<String>> paths = new ArrayList<>();
+        List<String> path = new ArrayList<>();
         // Call recursive utility
         Set<String> visited = new HashSet<>();
-        printAllPathsUtil(city1, city2, visited,path, graph);
-
+        printAllPathsUtil(city1, city2, visited,paths, path, graph);
+       return paths;
     }
 
 
 
-    private void printAllPathsUtil(String city1, String city2, Set<String> visited,ArrayList<String> path, Graph graph ){
+    private void printAllPathsUtil(String city1, String city2, Set<String> visited, ArrayList<List<String>> paths, List<String> path, Graph graph){
 
         if (city1.equals(city2)) {
-            LOGGER.info(path);
+            LinkedList<String> path1 = new LinkedList<>(path);
+            path1.addFirst(departure.getCity());
+            paths.add(path1);
             return;
         }
         visited.add(city1);
@@ -80,10 +83,9 @@ public class Application {
             String d = (String) c;
             if(!visited.contains(d)){
                 path.add(d);
-                printAllPathsUtil(d, city2,visited, path, graph);
+                printAllPathsUtil(d, city2,visited,paths, path, graph);
                 path.remove(d);
             }
-
         }
         visited.remove(city1);
     }
@@ -93,62 +95,62 @@ public class Application {
 
 
 
-    private ArrayList<ArrayList<String>> createPathWithGraph() {
-        Graph<String> graph = new Graph<>();
+//    private ArrayList<ArrayList<String>> createPathWithGraph() {
+//        Graph<String> graph = new Graph<>();
+//
+//        destinations.forEach(d -> {
+//            graph.addVertex(d.getCity());
+//            d.getPossibleDestinations().forEach(c -> {
+//                graph.addEdge(d.getCity(), c);
+//            });
+//        });
+//
+//        ArrayList<ArrayList<String>> paths = new ArrayList<>();
+//
+//        Set<String> possibleFirstStop = departure.getPossibleDestinations();//search possible first stop
+//        if (possibleFirstStop.contains(fDestination.getCity())) {
+//            ArrayList<String> tmp = new ArrayList<>();
+//            tmp.add(departure.getCity());
+//            tmp.add(fDestination.getCity());
+//            possibleFirstStop.remove(fDestination.getCity());
+//            paths.add(tmp);
+//        }
+//
+//        Set<String> possibleSecondStop = new HashSet<>();
+//        Set<String> visited = new HashSet<>();
+//        visited.add(departure.getCity());
+//        visited.add(fDestination.getCity());
+//
+//        possibleFirstStop.forEach(pStop -> {
+//            visited.add(pStop);
+//            if (graph.getAdjVertices(pStop).contains(fDestination.getCity())) {
+//                ArrayList<String> tmp = new ArrayList<>();
+//                tmp.add(departure.getCity());
+//                tmp.add(pStop);
+//                tmp.add(fDestination.getCity());
+//                paths.add(tmp);
+//            }
+//            possibleSecondStop.addAll(graph.getAdjVertices(pStop));
+//            possibleSecondStop.removeAll(visited);
+//        });
+//
+//        possibleFirstStop.forEach(pStop -> {
+//            possibleSecondStop.forEach(pSecondStop -> {
+//                if (graph.getAdjVertices(pStop).contains(pSecondStop) && graph.getAdjVertices(pSecondStop).contains(fDestination.getCity())) {
+//                    ArrayList<String> tmp = new ArrayList<>();
+//                    tmp.add(departure.getCity());
+//                    tmp.add(pStop);
+//                    tmp.add(pSecondStop);
+//                    tmp.add(fDestination.getCity());
+//                    paths.add(tmp);
+//                }
+//            });
+//        });
+//
+//        return paths;
+//    }
 
-        destinations.forEach(d -> {
-            graph.addVertex(d.getCity());
-            d.getPossibleDestinations().forEach(c -> {
-                graph.addEdge(d.getCity(), c);
-            });
-        });
-
-        ArrayList<ArrayList<String>> paths = new ArrayList<>();
-
-        Set<String> possibleFirstStop = departure.getPossibleDestinations();//search possible first stop
-        if (possibleFirstStop.contains(fDestination.getCity())) {
-            ArrayList<String> tmp = new ArrayList<>();
-            tmp.add(departure.getCity());
-            tmp.add(fDestination.getCity());
-            possibleFirstStop.remove(fDestination.getCity());
-            paths.add(tmp);
-        }
-
-        Set<String> possibleSecondStop = new HashSet<>();
-        Set<String> visited = new HashSet<>();
-        visited.add(departure.getCity());
-        visited.add(fDestination.getCity());
-
-        possibleFirstStop.forEach(pStop -> {
-            visited.add(pStop);
-            if (graph.getAdjVertices(pStop).contains(fDestination.getCity())) {
-                ArrayList<String> tmp = new ArrayList<>();
-                tmp.add(departure.getCity());
-                tmp.add(pStop);
-                tmp.add(fDestination.getCity());
-                paths.add(tmp);
-            }
-            possibleSecondStop.addAll(graph.getAdjVertices(pStop));
-            possibleSecondStop.removeAll(visited);
-        });
-
-        possibleFirstStop.forEach(pStop -> {
-            possibleSecondStop.forEach(pSecondStop -> {
-                if (graph.getAdjVertices(pStop).contains(pSecondStop) && graph.getAdjVertices(pSecondStop).contains(fDestination.getCity())) {
-                    ArrayList<String> tmp = new ArrayList<>();
-                    tmp.add(departure.getCity());
-                    tmp.add(pStop);
-                    tmp.add(pSecondStop);
-                    tmp.add(fDestination.getCity());
-                    paths.add(tmp);
-                }
-            });
-        });
-
-        return paths;
-    }
-
-    public ArrayList<Trip> buildAllTrips(ArrayList<ArrayList<String>> paths) {
+    public ArrayList<Trip> buildAllTrips(ArrayList<List<String>> paths) {
         LOGGER.info(":::::::PATHS::::");
         paths.forEach(LOGGER::info);
         LOGGER.info(":::::::::::");
