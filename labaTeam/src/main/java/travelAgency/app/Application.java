@@ -159,32 +159,27 @@ public class Application {
     public void selectTypeOfFilter(int choice) {
         ArrayList<Trip> possiblesTrips = searchAllTrips();
         ArrayList<Trip> possiblesGraphTrips = searchAllTripsWithGraph();
+        if (possiblesGraphTrips.isEmpty()) {
+            choice = -1;
+            LOGGER.info("No flights founded");
+        }
+        LOGGER.info("______________________________");
         switch (choice) {
             case 0:
-                if (!possiblesGraphTrips.isEmpty()) {
-                    possiblesGraphTrips.sort(Comparator.comparing(Trip::getPrice));
-                    LOGGER.info("______________________________");
-                    LOGGER.info("\nCheaper: " + possiblesGraphTrips.get(0));
-                    LOGGER.info("______________________________");
-                } else {
-                    LOGGER.info("No flights founded");
-                }
+                possiblesGraphTrips.sort(Comparator.comparing(Trip::getPrice));
+                LOGGER.info("\nCheaper:\n" + possiblesGraphTrips.get(0));
+
                 break;
 
             case 1:
-                if (!possiblesGraphTrips.isEmpty()) {
-                    possiblesGraphTrips.sort(Comparator.comparing(Trip::getDistance));
-                    LOGGER.info("______________________________");
-                    LOGGER.info("\nShortest: " + possiblesGraphTrips.get(0));
-                    LOGGER.info("______________________________");
-                } else {
-                    LOGGER.info("No flights founded");
-                }
+                possiblesGraphTrips.sort(Comparator.comparing(Trip::getDistance));
+                LOGGER.info("\nShortest:\n" + possiblesGraphTrips.get(0));
                 break;
-
+                
             default:
                 throw new IllegalArgumentException("Invalid choice");
         }
+        LOGGER.info("______________________________");
     }
 
     public void printAllTrips() {
