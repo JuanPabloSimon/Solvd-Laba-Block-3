@@ -69,6 +69,7 @@ public class Application {
             ArrayList<String> tmp = new ArrayList<>();
             tmp.add(departure.getCity());
             tmp.add(fDestination.getCity());
+            possibleFirstStop.remove(fDestination.getCity());
             paths.add(tmp);
         }
 
@@ -114,10 +115,8 @@ public class Application {
         paths.forEach(p -> {
             ArrayList<Trip> trip = getAirport(p.get(0)).searchRoute(getAirport(p.get(1)));//All direct flights
             if (p.size() > 2) {
-
                 for (int i = 1; i < (p.size() - 1); i++) {
                     ArrayList<Trip> possibleTripNextPart = getAirport(p.get(i)).searchRoute(getAirport(p.get(i + 1)));
-
                     if (!possibleTripNextPart.isEmpty()) {
                         ArrayList<Trip> temp = new ArrayList<Trip>();
                         trip.forEach(t -> {
@@ -175,7 +174,7 @@ public class Application {
                 possiblesGraphTrips.sort(Comparator.comparing(Trip::getDistance));
                 LOGGER.info("\nShortest:\n" + possiblesGraphTrips.get(0));
                 break;
-                
+
             default:
                 throw new IllegalArgumentException("Invalid choice");
         }
