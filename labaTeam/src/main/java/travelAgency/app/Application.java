@@ -25,7 +25,7 @@ public class Application {
     }
 
     public void run() {
-        LOGGER.info("Welcome to FlyAgency¿¿?? \n Please select your place of departure: ");
+        LOGGER.info("Welcome to Cosmic Obelisk \n Please select your place of departure: ");
         for (Airport a : destinations) {
             LOGGER.info("[" + destinations.indexOf(a) + "]. " + a.getName() + ", " + a.getCity() + ", " + a.getCountry());
         }
@@ -72,9 +72,7 @@ public class Application {
         return paths;
     }
 
-
-    private void printAllPathsUtil(String city1, String city2, Set<String> visited, ArrayList<List<String>> paths, List<String> path, Graph graph) {
-
+    private void printAllPathsUtil(String city1, String city2, Set<String> visited, ArrayList<List<String>> paths, List<String> path, Graph<String> graph) {
         if (city1.equals(city2)) {
             LinkedList<String> path1 = new LinkedList<>(path);
             path1.addFirst(departure.getCity());
@@ -92,62 +90,6 @@ public class Application {
         }
         visited.remove(city1);
     }
-
-
-//    private ArrayList<ArrayList<String>> createPathWithGraph() {
-//        Graph<String> graph = new Graph<>();
-//
-//        destinations.forEach(d -> {
-//            graph.addVertex(d.getCity());
-//            d.getPossibleDestinations().forEach(c -> {
-//                graph.addEdge(d.getCity(), c);
-//            });
-//        });
-//
-//        ArrayList<ArrayList<String>> paths = new ArrayList<>();
-//
-//        Set<String> possibleFirstStop = departure.getPossibleDestinations();//search possible first stop
-//        if (possibleFirstStop.contains(fDestination.getCity())) {
-//            ArrayList<String> tmp = new ArrayList<>();
-//            tmp.add(departure.getCity());
-//            tmp.add(fDestination.getCity());
-//            possibleFirstStop.remove(fDestination.getCity());
-//            paths.add(tmp);
-//        }
-//
-//        Set<String> possibleSecondStop = new HashSet<>();
-//        Set<String> visited = new HashSet<>();
-//        visited.add(departure.getCity());
-//        visited.add(fDestination.getCity());
-//
-//        possibleFirstStop.forEach(pStop -> {
-//            visited.add(pStop);
-//            if (graph.getAdjVertices(pStop).contains(fDestination.getCity())) {
-//                ArrayList<String> tmp = new ArrayList<>();
-//                tmp.add(departure.getCity());
-//                tmp.add(pStop);
-//                tmp.add(fDestination.getCity());
-//                paths.add(tmp);
-//            }
-//            possibleSecondStop.addAll(graph.getAdjVertices(pStop));
-//            possibleSecondStop.removeAll(visited);
-//        });
-//
-//        possibleFirstStop.forEach(pStop -> {
-//            possibleSecondStop.forEach(pSecondStop -> {
-//                if (graph.getAdjVertices(pStop).contains(pSecondStop) && graph.getAdjVertices(pSecondStop).contains(fDestination.getCity())) {
-//                    ArrayList<String> tmp = new ArrayList<>();
-//                    tmp.add(departure.getCity());
-//                    tmp.add(pStop);
-//                    tmp.add(pSecondStop);
-//                    tmp.add(fDestination.getCity());
-//                    paths.add(tmp);
-//                }
-//            });
-//        });
-//
-//        return paths;
-//    }
 
     public ArrayList<Trip> buildAllTrips(ArrayList<List<String>> paths) {
         LOGGER.info(":::::::PATHS::::");
@@ -178,7 +120,6 @@ public class Application {
         return completeTrips;
     }
 
-
     public void selectDeparture(int choice) {
         if (choice >= 0 && choice < destinations.size()) {
             destinations.stream().filter(d -> destinations.indexOf(d) != choice).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
@@ -201,30 +142,29 @@ public class Application {
         ArrayList<Trip> possiblesTrips = searchAllTrips();
         ArrayList<Trip> possiblesGraphTrips = searchAllTripsWithGraph();
         if (possiblesGraphTrips.isEmpty()) {
-            choice = -1;
             LOGGER.info("No flights founded");
+        } else {
+            LOGGER.info("______________________________");
+            switch (choice) {
+                case 0:
+                    possiblesGraphTrips.sort(Comparator.comparing(Trip::getPrice));
+                    LOGGER.info("\nCheaper:\n" + possiblesGraphTrips.get(0));
+
+                    break;
+
+                case 1:
+                    possiblesGraphTrips.sort(Comparator.comparing(Trip::getDistance));
+                    LOGGER.info("\nShortest:\n" + possiblesGraphTrips.get(0));
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Invalid choice");
+            }
+            LOGGER.info("______________________________");
         }
-        LOGGER.info("______________________________");
-        switch (choice) {
-            case 0:
-                possiblesGraphTrips.sort(Comparator.comparing(Trip::getPrice));
-                LOGGER.info("\nCheaper:\n" + possiblesGraphTrips.get(0));
-
-                break;
-
-            case 1:
-                possiblesGraphTrips.sort(Comparator.comparing(Trip::getDistance));
-                LOGGER.info("\nShortest:\n" + possiblesGraphTrips.get(0));
-                break;
-
-            default:
-                throw new IllegalArgumentException("Invalid choice");
-        }
-        LOGGER.info("______________________________");
     }
 
     public void printAllTrips() {
-        //ArrayList<Trip> possiblesTrips = searchAllTrips();
         ArrayList<Trip> possiblesGraphTrips = searchAllTripsWithGraph();
 
         if (!possiblesGraphTrips.isEmpty()) {
