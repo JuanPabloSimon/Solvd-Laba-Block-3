@@ -30,5 +30,5 @@ logs/*
 /labaTeam/musichall.iml
 /labaTeam/target
 /target/
-.json
+*.json
 !tripTest.json
