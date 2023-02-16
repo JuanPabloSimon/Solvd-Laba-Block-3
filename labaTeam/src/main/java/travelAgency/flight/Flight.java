@@ -3,17 +3,26 @@ package travelAgency.flight;
 import helpers.DistanceCalculator;
 import travelAgency.airport.AirportLocation;
 
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "flight")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Flight {
+    @XmlAttribute(name = "id")
     private int id;
+    @XmlElement(name = "flightStart")
     private AirportLocation start = new AirportLocation();
-    private AirportLocation finalDestination = new AirportLocation();
+    @XmlElement(name = "flightDestination")
+    private AirportLocation destination = new AirportLocation();
+    @XmlElement(name = "price")
     private double price;
+    @XmlElement(name = "distance")
     private double distance;
 
     public Flight(int id, AirportLocation start, AirportLocation finalDestination, double price) {
         this.id = id;
         this.start = start;
-        this.finalDestination = finalDestination;
+        this.destination = finalDestination;
         this.price = price;
         setDistance();
     }
@@ -41,12 +50,12 @@ public class Flight {
         setDistance();
     }
 
-    public AirportLocation getFinalDestination() {
-        return finalDestination;
+    public AirportLocation getDestination() {
+        return destination;
     }
 
-    public void setFinalDestination(AirportLocation finalDestination) {
-        this.finalDestination = finalDestination;
+    public void setDestination(AirportLocation destination) {
+        this.destination = destination;
         setDistance();
     }
 
@@ -67,8 +76,8 @@ public class Flight {
     private void setDistance() {
         this.distance = DistanceCalculator.distance(this.start.getLatitude(),
                 this.start.getLongitude(),
-                this.finalDestination.getLatitude(),
-                this.finalDestination.getLongitude(),
+                this.destination.getLatitude(),
+                this.destination.getLongitude(),
                 'K');
     }
 
@@ -76,7 +85,7 @@ public class Flight {
     public String toString() {
         return "Flight{" + "id=" + id +
                 ", \n\t\tstart=" + start.getName() + " " + start.getCity() +
-                ", \n\t\tfinalDestination=" + finalDestination.getName() + " " + finalDestination.getCity() +
+                ", \n\t\tfinalDestination=" + destination.getName() + " " + destination.getCity() +
                 ", \n\t\tprice=" + price +
                 ", \n\t\tdistance=" + Math.round(distance * 100.0) / 100.0 + " Km" +
                 '}';

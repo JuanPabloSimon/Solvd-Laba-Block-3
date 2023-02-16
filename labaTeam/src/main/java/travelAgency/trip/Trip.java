@@ -5,18 +5,31 @@ import travelAgency.airport.Airport;
 import travelAgency.airport.AirportLocation;
 import travelAgency.flight.Flight;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 
+@XmlRootElement(name = "trip")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Trip {
     private static int tripId = 0;
+    @XmlAttribute(name = "id")
     @JsonProperty("tripId")
     private int id;
+    @XmlElement(name = "startLocation")
     @JsonProperty("start")
     private AirportLocation start;
+    @XmlElement(name = "finalDestination")
     @JsonProperty("finalDestination")
     private AirportLocation finalDestination;
+    @XmlElementWrapper(name = "flights")
+    @XmlElement(name = "flight")
     @JsonProperty("flights")
     private ArrayList<Flight> flights;
+
+    public Trip() {
+        this.id = ++tripId;
+    }
+
 
     public Trip(Airport start, Airport finalDestination, ArrayList<Flight> flights) {
         this.id = ++tripId;

@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import service.mybatis.AirportService;
 import travelAgency.airport.Airport;
 import travelAgency.trip.Trip;
+import utils.XmlParser;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -29,27 +30,40 @@ public class Application {
     }
 
     public void run() throws IOException {
+        int choice = 0;
+        departure = null;
+        fDestination = null;
         LOGGER.info("Welcome to Cosmic Obelisk \n Please select your place of departure: ");
         for (Airport a : destinations) {
             LOGGER.info("[" + destinations.indexOf(a) + "]. " + a.getName() + ", " + a.getCity() + ", " + a.getCountry());
         }
-        int choice = scanner.nextInt();
+        LOGGER.info("\n[" + 99 + "]. " + "To close the app");
+        choice = scanner.nextInt();
+        if (choice == 99)
+            return;
         LOGGER.info("Select your destination: ");
         selectDeparture(choice);
         choice = scanner.nextInt();
+        if (choice == 99)
+            return;
         selectDestination(choice);
-        LOGGER.info("Select how would you like your trip to be calculated: \n" +
-                "[0]. Cheapest Trip \n" +
-                "[1]. Fastest Trip");
-        choice = scanner.nextInt();
-        selectTypeOfFilter(choice);
-        LOGGER.info("Would you like to see all possible trip options and compare them manually?: \n" +
-                "[0]. No \n" +
-                "[1]. Yes");
-        choice = scanner.nextInt();
-        if (choice == 1) {
-            printAllTrips();
+        if (departure != null && departure != fDestination & fDestination != null) {
+            LOGGER.info("Select how would you like your trip to be calculated: \n" +
+                    "[0]. Cheapest Trip \n" +
+                    "[1]. Fastest Trip\n" +
+                    "[99]. To close the app");
+            choice = scanner.nextInt();
+            if (choice == 99)
+                return;
+            selectTypeOfFilter(choice);
         }
+//        LOGGER.info("Would you like to see all possible trip options and compare them manually?: \n" +
+//                "[0]. No \n" +
+//                "[1]. Yes");
+//        choice = scanner.nextInt();
+//        if (choice == 1) {
+//            printAllTrips();
+//        }
 
     }
 
@@ -96,9 +110,6 @@ public class Application {
     }
 
     public ArrayList<Trip> buildAllTrips(ArrayList<List<String>> paths) {
-        LOGGER.info("::::::PATHS::::::");
-        paths.forEach(LOGGER::info);
-        LOGGER.info(":::::::::::::::::");
         ArrayList<Trip> completeTrips = new ArrayList<>();
         paths.forEach(p -> {
             ArrayList<Trip> trip = getAirport(p.get(0)).searchRoute(getAirport(p.get(1)));//All direct flights
@@ -124,21 +135,24 @@ public class Application {
         return completeTrips;
     }
 
-    public void selectDeparture(int choice) {
+    public void selectDeparture(int choice) throws IOException {
         if (choice >= 0 && choice < destinations.size()) {
             destinations.stream().filter(d -> destinations.indexOf(d) != choice).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
+            LOGGER.info("\n[" + 99 + "]. " + "To close the app");
             setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == choice).findAny().orElse(null));
         } else {
-            throw new IllegalArgumentException("Parameter out of bounds");
+            LOGGER.info("\n~~~~~~Illegal destination choice, restarting the app~~~~~~\n");
+            run();
         }
     }
 
-    public void selectDestination(int choice) {
-        if (choice >= 0 && choice < destinations.size()) {
+    public void selectDestination(int choice) throws IOException {
+        if (choice >= 0 && choice < destinations.size() && choice != destinations.indexOf(departure)) {
             destinations.stream().filter(d -> destinations.indexOf(d) == choice).forEach(e -> LOGGER.info("Destination Selected: " + e.getCity()));
             setfDestination(destinations.stream().filter(d -> destinations.indexOf(d) == choice).findAny().orElse(null));
         } else {
-            throw new IllegalArgumentException("Parameter out of bounds");
+            LOGGER.info("\n~~~~~~Illegal destination choice, restarting the app~~~~~~\n");
+            run();
         }
     }
 
@@ -153,6 +167,7 @@ public class Application {
                     possiblesGraphTrips.sort(Comparator.comparing(Trip::getPrice));
                     LOGGER.info("\nCheaper:\n" + possiblesGraphTrips.get(0));
                     getTripInJsonFormat(possiblesGraphTrips.get(0));
+                    XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
                     break;
                 case 1:
                     possiblesGraphTrips.sort(Comparator.comparing(Trip::getDistance));
@@ -160,10 +175,11 @@ public class Application {
                     getTripInJsonFormat(possiblesGraphTrips.get(0));
                     break;
                 default:
-                    throw new IllegalArgumentException("Invalid choice");
+                    LOGGER.info("\n~~~~~~Illegal Filter choice, restarting the app~~~~~~\n");
             }
             LOGGER.info("______________________________");
         }
+        run();
     }
 
     public void printAllTrips() {
@@ -249,4 +265,6 @@ public class Application {
         fileWriter.write(json);
         fileWriter.close();
     }
+
+
 }

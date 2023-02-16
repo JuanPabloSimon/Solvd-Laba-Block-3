@@ -12,7 +12,7 @@
         JOIN Airport aa ON f.idArrivalAirport = aa.idAirport
         WHERE f.idFlight = #{id}
     </select>
-    
+
     <insert id="createEntity" useGeneratedKeys="true" keyProperty="id" parameterType="travelAgency.flight.Flight">
         INSERT INTO Flight (price, Airlines_idAirlines, IdDepartureAirport, idArrivalAirport)
         VALUES (#{price}, #{start.airlines[0].id}, #{start.id}, #{finalDestination.id})
@@ -38,7 +38,7 @@
             <result column="latitude" property="latitude"/>
             <result column="longitude" property="longitude"/>
         </association>
-        <association property="finalDestination" javaType="travelAgency.airport.AirportLocation">
+        <association property="destination" javaType="travelAgency.airport.AirportLocation">
             <result column="arrivalAirport" property="name" javaType="java.lang.String"/>
             <result column="arrivalCity" property="city"/>
             <result column="aCountry" property="country"/>
