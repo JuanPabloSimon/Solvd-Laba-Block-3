@@ -31,4 +31,4 @@ logs/*
 /labaTeam/target
 /target/
 .json
-!test.json
+!tripTest.json
