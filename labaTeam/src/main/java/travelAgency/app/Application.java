@@ -143,7 +143,6 @@ public class Application {
     }
 
     public void selectTypeOfFilter(int choice) throws IOException {
-        ArrayList<Trip> possiblesTrips = searchAllTrips();
         ArrayList<Trip> possiblesGraphTrips = searchAllTripsWithGraph();
         if (possiblesGraphTrips.isEmpty()) {
             LOGGER.info("No flights founded");
