@@ -38,18 +38,22 @@ public class Application {
         }
         LOGGER.info("\n[" + 99 + "]. " + "To close the app");
         choice = scanner.nextInt();
-        if (choice == 99) {
+        if (choice == 99)
             return;
-        }
         LOGGER.info("Select your destination: ");
         selectDeparture(choice);
         choice = scanner.nextInt();
+        if (choice == 99)
+            return;
         selectDestination(choice);
         if (departure != null && departure != fDestination & fDestination != null) {
             LOGGER.info("Select how would you like your trip to be calculated: \n" +
                     "[0]. Cheapest Trip \n" +
-                    "[1]. Fastest Trip");
+                    "[1]. Fastest Trip\n" +
+                    "[99]. To close the app");
             choice = scanner.nextInt();
+            if (choice == 99)
+                return;
             selectTypeOfFilter(choice);
         }
 //        LOGGER.info("Would you like to see all possible trip options and compare them manually?: \n" +
@@ -133,6 +137,7 @@ public class Application {
     public void selectDeparture(int choice) throws IOException {
         if (choice >= 0 && choice < destinations.size()) {
             destinations.stream().filter(d -> destinations.indexOf(d) != choice).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
+            LOGGER.info("\n[" + 99 + "]. " + "To close the app");
             setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == choice).findAny().orElse(null));
         } else {
             LOGGER.info("\n~~~~~~Illegal destination choice, restarting the app~~~~~~\n");
