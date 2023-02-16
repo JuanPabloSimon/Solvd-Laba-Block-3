@@ -10,14 +10,17 @@ import javax.xml.bind.annotation.*;
 public class Flight {
     @XmlAttribute(name = "id")
     private int id;
-    @XmlElement(name = "flightStart")
-    private AirportLocation start = new AirportLocation();
-    @XmlElement(name = "flightDestination")
-    private AirportLocation destination = new AirportLocation();
+    @XmlElement(name = "airline")
+    private String airline;
     @XmlElement(name = "price")
     private double price;
     @XmlElement(name = "distance")
     private double distance;
+    @XmlElement(name = "flightStart")
+    private AirportLocation start = new AirportLocation();
+    @XmlElement(name = "flightDestination")
+    private AirportLocation destination = new AirportLocation();
+
 
     public Flight(int id, AirportLocation start, AirportLocation finalDestination, double price) {
         this.id = id;
@@ -81,13 +84,23 @@ public class Flight {
                 'K');
     }
 
+    public String getAirline() {
+        return airline;
+    }
+
+    public void setAirline(String airline) {
+        this.airline = airline;
+    }
+
     @Override
     public String toString() {
         return "Flight{" + "id=" + id +
+                ", \n\t\tairline=" + airline +
                 ", \n\t\tstart=" + start.getName() + " " + start.getCity() +
                 ", \n\t\tfinalDestination=" + destination.getName() + " " + destination.getCity() +
                 ", \n\t\tprice=" + price +
                 ", \n\t\tdistance=" + Math.round(distance * 100.0) / 100.0 + " Km" +
                 '}';
     }
+
 }

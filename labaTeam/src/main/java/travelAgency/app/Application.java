@@ -173,6 +173,7 @@ public class Application {
                     possiblesGraphTrips.sort(Comparator.comparing(Trip::getDistance));
                     LOGGER.info("\nShortest:\n" + possiblesGraphTrips.get(0));
                     getTripInJsonFormat(possiblesGraphTrips.get(0));
+                    XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
                     break;
                 default:
                     LOGGER.info("\n~~~~~~Illegal Filter choice, restarting the app~~~~~~\n");
