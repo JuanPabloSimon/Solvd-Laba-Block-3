@@ -29,24 +29,29 @@ public class Application {
     }
 
     public void run() throws IOException {
+        int choice = 0;
+        departure = null;
+        fDestination = null;
         LOGGER.info("Welcome to Cosmic Obelisk \n Please select your place of departure: ");
         for (Airport a : destinations) {
             LOGGER.info("[" + destinations.indexOf(a) + "]. " + a.getName() + ", " + a.getCity() + ", " + a.getCountry());
         }
-        LOGGER.info("\n[" + -1 + "]. " + "To close the app");
-        int choice = scanner.nextInt();
-        if (choice == -1) {
+        LOGGER.info("\n[" + 99 + "]. " + "To close the app");
+        choice = scanner.nextInt();
+        if (choice == 99) {
             return;
         }
         LOGGER.info("Select your destination: ");
         selectDeparture(choice);
         choice = scanner.nextInt();
         selectDestination(choice);
-        LOGGER.info("Select how would you like your trip to be calculated: \n" +
-                "[0]. Cheapest Trip \n" +
-                "[1]. Fastest Trip");
-        choice = scanner.nextInt();
-        selectTypeOfFilter(choice);
+        if (departure != null && departure != fDestination & fDestination != null) {
+            LOGGER.info("Select how would you like your trip to be calculated: \n" +
+                    "[0]. Cheapest Trip \n" +
+                    "[1]. Fastest Trip");
+            choice = scanner.nextInt();
+            selectTypeOfFilter(choice);
+        }
 //        LOGGER.info("Would you like to see all possible trip options and compare them manually?: \n" +
 //                "[0]. No \n" +
 //                "[1]. Yes");
@@ -100,9 +105,6 @@ public class Application {
     }
 
     public ArrayList<Trip> buildAllTrips(ArrayList<List<String>> paths) {
-        LOGGER.info("::::::PATHS::::::");
-        paths.forEach(LOGGER::info);
-        LOGGER.info(":::::::::::::::::");
         ArrayList<Trip> completeTrips = new ArrayList<>();
         paths.forEach(p -> {
             ArrayList<Trip> trip = getAirport(p.get(0)).searchRoute(getAirport(p.get(1)));//All direct flights
