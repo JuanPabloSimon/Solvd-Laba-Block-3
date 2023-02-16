@@ -153,14 +153,13 @@ public class Application {
                 case 0:
                     possiblesGraphTrips.sort(Comparator.comparing(Trip::getPrice));
                     LOGGER.info("\nCheaper:\n" + possiblesGraphTrips.get(0));
-
+                    getTripInJsonFormat(possiblesGraphTrips.get(0));
                     break;
-
                 case 1:
                     possiblesGraphTrips.sort(Comparator.comparing(Trip::getDistance));
                     LOGGER.info("\nShortest:\n" + possiblesGraphTrips.get(0));
+                    getTripInJsonFormat(possiblesGraphTrips.get(0));
                     break;
-
                 default:
                     throw new IllegalArgumentException("Invalid choice");
             }
@@ -170,7 +169,6 @@ public class Application {
 
     public void printAllTrips() {
         ArrayList<Trip> possiblesGraphTrips = searchAllTripsWithGraph();
-
         if (!possiblesGraphTrips.isEmpty()) {
             LOGGER.info("\n");
             LOGGER.info("You have this trips options:" + possiblesGraphTrips.size());
@@ -193,7 +191,6 @@ public class Application {
         ArrayList<Trip> trips = new ArrayList<>();
         trips.addAll(searchDirectTrip());//search direct flight
         trips.addAll(searchOneStopTrip());
-        getTripInJsonFormat(trips);
         return trips;
     }
 
@@ -243,11 +240,11 @@ public class Application {
         return destinations.stream().filter(d -> airport.equals(d.getCity())).findFirst().orElse(null);
     }
 
-    public void getTripInJsonFormat(ArrayList<Trip> trips) throws IOException {
+    public void getTripInJsonFormat(Trip trip) throws IOException {
         ObjectMapper om = new ObjectMapper();
         om.enable(SerializationFeature.INDENT_OUTPUT);
         // serialize the trip object to JSON string
-        String json = om.writeValueAsString(trips);
+        String json = om.writeValueAsString(trip);
         // save the JSON string to a file
         FileWriter fileWriter = new FileWriter("./src/main/java/json/files/trip.json");
         fileWriter.write(json);
