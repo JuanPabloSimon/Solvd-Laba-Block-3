@@ -38,9 +38,9 @@ public class Airline {
 
     public ArrayList<Flight> canFlyMeTo(Airport destination) {//All the flights that can fly you to the destination
         ArrayList<Flight> flights = new ArrayList<>();
-        for (Flight flight: this.flights) {
-            if (flight.getFinalDestination().getCity().equals(destination.getCity()) &&
-                    flight.getFinalDestination().getName().equals(destination.getName()))   {
+        for (Flight flight : this.flights) {
+            if (flight.getDestination().getCity().equals(destination.getCity()) &&
+                    flight.getDestination().getName().equals(destination.getName())) {
                 flights.add(flight);
             }
         }
@@ -50,13 +50,11 @@ public class Airline {
 
     public Set<String> getPossibleDestinations() {
         Set<String> possibleDestinations = new HashSet<>();
-        for (Flight flight: this.flights) {//This looks for direct flights
-            possibleDestinations.add(flight.getFinalDestination().getCity());
+        for (Flight flight : this.flights) {//This looks for direct flights
+            possibleDestinations.add(flight.getDestination().getCity());
         }
         return possibleDestinations;
     }
-
-
 
 
     @Override
@@ -67,7 +65,6 @@ public class Airline {
                 ", flights=" + flights +
                 '}';
     }
-
 
 
 }

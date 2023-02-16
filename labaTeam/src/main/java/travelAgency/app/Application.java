@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import service.mybatis.AirportService;
 import travelAgency.airport.Airport;
 import travelAgency.trip.Trip;
+import utils.XmlParser;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -166,6 +167,7 @@ public class Application {
                     possiblesGraphTrips.sort(Comparator.comparing(Trip::getPrice));
                     LOGGER.info("\nCheaper:\n" + possiblesGraphTrips.get(0));
                     getTripInJsonFormat(possiblesGraphTrips.get(0));
+                    XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
                     break;
                 case 1:
                     possiblesGraphTrips.sort(Comparator.comparing(Trip::getDistance));
@@ -263,4 +265,6 @@ public class Application {
         fileWriter.write(json);
         fileWriter.close();
     }
+
+
 }

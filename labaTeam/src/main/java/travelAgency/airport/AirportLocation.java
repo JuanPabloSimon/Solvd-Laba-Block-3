@@ -1,10 +1,22 @@
 package travelAgency.airport;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "airportLocation")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class AirportLocation {
+    @XmlElement(name = "name")
     private String name;
+    @XmlElement(name = "country")
     private String country;
+    @XmlElement(name = "city")
     private String city;
+    @XmlElement(name = "latitude")
     private double latitude;
+    @XmlElement(name = "longitude")
     private double longitude;
 
     public AirportLocation() {
@@ -19,7 +31,7 @@ public class AirportLocation {
         this.longitude = longitude;
     }
 
-    public AirportLocation(Airport airport){
+    public AirportLocation(Airport airport) {
         this.name = airport.getName();
         this.country = airport.getCountry();
         this.city = airport.getCity();

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<trip id="115">
+    <startLocation>
+        <name>John F. Kennedy International Airport</name>
+        <country>USA</country>
+        <city>New York City</city>
+        <latitude>40.642098</latitude>
+        <longitude>-73.789288</longitude>
+    </startLocation>
+    <finalDestination>
+        <name>Paris Charles de Gaulle Airport</name>
+        <country>France</country>
+        <city>Paris</city>
+        <latitude>49.00665965</latitude>
+        <longitude>2.57076947408831</longitude>
+    </finalDestination>
+    <flights>
+        <flight id="43">
+            <flightStart>
+                <name>John F. Kennedy International Airport</name>
+                <country>USA</country>
+                <city>New York City</city>
+                <latitude>40.642098</latitude>
+                <longitude>-73.789288</longitude>
+            </flightStart>
+            <flightDestination>
+                <name>Paris Charles de Gaulle Airport</name>
+                <country>France</country>
+                <city>Paris</city>
+                <latitude>49.00665965</latitude>
+                <longitude>2.57076947408831</longitude>
+            </flightDestination>
+            <price>410.0</price>
+            <distance>5835.581193870808</distance>
+        </flight>
+    </flights>
+</trip>
