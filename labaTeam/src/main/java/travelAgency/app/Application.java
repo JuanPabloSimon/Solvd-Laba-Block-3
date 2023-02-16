@@ -246,7 +246,7 @@ public class Application {
         // serialize the trip object to JSON string
         String json = om.writeValueAsString(trip);
         // save the JSON string to a file
-        FileWriter fileWriter = new FileWriter("./src/main/java/json/files/trip.json");
+        FileWriter fileWriter = new FileWriter("./src/main/resources/json/trip.json");
         fileWriter.write(json);
         fileWriter.close();
     }
