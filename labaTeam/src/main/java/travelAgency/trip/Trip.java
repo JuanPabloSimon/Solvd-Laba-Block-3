@@ -1,5 +1,6 @@
 package travelAgency.trip;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import travelAgency.airport.Airport;
 import travelAgency.airport.AirportLocation;
 import travelAgency.flight.Flight;
@@ -8,10 +9,13 @@ import java.util.ArrayList;
 
 public class Trip {
     private static int tripId = 0;
-
+    @JsonProperty("tripId")
     private int id;
+    @JsonProperty("start")
     private AirportLocation start;
+    @JsonProperty("finalDestination")
     private AirportLocation finalDestination;
+    @JsonProperty("flights")
     private ArrayList<Flight> flights;
 
     public Trip(Airport start, Airport finalDestination, ArrayList<Flight> flights) {

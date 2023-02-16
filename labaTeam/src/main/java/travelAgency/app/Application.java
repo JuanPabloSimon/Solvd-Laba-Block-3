@@ -1,5 +1,7 @@
 package travelAgency.app;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import helpers.Graph;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,6 +9,8 @@ import service.mybatis.AirportService;
 import travelAgency.airport.Airport;
 import travelAgency.trip.Trip;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,7 +28,7 @@ public class Application {
         this.destinations = airportService.findAll();
     }
 
-    public void run() {
+    public void run() throws IOException {
         LOGGER.info("Welcome to Cosmic Obelisk \n Please select your place of departure: ");
         for (Airport a : destinations) {
             LOGGER.info("[" + destinations.indexOf(a) + "]. " + a.getName() + ", " + a.getCity() + ", " + a.getCountry());
@@ -138,7 +142,7 @@ public class Application {
         }
     }
 
-    public void selectTypeOfFilter(int choice) {
+    public void selectTypeOfFilter(int choice) throws IOException {
         ArrayList<Trip> possiblesTrips = searchAllTrips();
         ArrayList<Trip> possiblesGraphTrips = searchAllTripsWithGraph();
         if (possiblesGraphTrips.isEmpty()) {
@@ -185,10 +189,11 @@ public class Application {
         }
     }
 
-    public ArrayList<Trip> searchAllTrips() {
+    public ArrayList<Trip> searchAllTrips() throws IOException {
         ArrayList<Trip> trips = new ArrayList<>();
         trips.addAll(searchDirectTrip());//search direct flight
         trips.addAll(searchOneStopTrip());
+        getTripInJsonFormat(trips);
         return trips;
     }
 
@@ -238,5 +243,14 @@ public class Application {
         return destinations.stream().filter(d -> airport.equals(d.getCity())).findFirst().orElse(null);
     }
 
-
+    public void getTripInJsonFormat(ArrayList<Trip> trips) throws IOException {
+        ObjectMapper om = new ObjectMapper();
+        om.enable(SerializationFeature.INDENT_OUTPUT);
+        // serialize the trip object to JSON string
+        String json = om.writeValueAsString(trips);
+        // save the JSON string to a file
+        FileWriter fileWriter = new FileWriter("./src/main/java/json/files/trip.json");
+        fileWriter.write(json);
+        fileWriter.close();
+    }
 }
