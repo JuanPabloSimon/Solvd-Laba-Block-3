@@ -33,7 +33,11 @@ public class Application {
         for (Airport a : destinations) {
             LOGGER.info("[" + destinations.indexOf(a) + "]. " + a.getName() + ", " + a.getCity() + ", " + a.getCountry());
         }
+        LOGGER.info("\n[" + -1 + "]. " + "To close the app");
         int choice = scanner.nextInt();
+        if (choice == -1) {
+            return;
+        }
         LOGGER.info("Select your destination: ");
         selectDeparture(choice);
         choice = scanner.nextInt();
@@ -43,13 +47,13 @@ public class Application {
                 "[1]. Fastest Trip");
         choice = scanner.nextInt();
         selectTypeOfFilter(choice);
-        LOGGER.info("Would you like to see all possible trip options and compare them manually?: \n" +
-                "[0]. No \n" +
-                "[1]. Yes");
-        choice = scanner.nextInt();
-        if (choice == 1) {
-            printAllTrips();
-        }
+//        LOGGER.info("Would you like to see all possible trip options and compare them manually?: \n" +
+//                "[0]. No \n" +
+//                "[1]. Yes");
+//        choice = scanner.nextInt();
+//        if (choice == 1) {
+//            printAllTrips();
+//        }
 
     }
 
@@ -124,21 +128,23 @@ public class Application {
         return completeTrips;
     }
 
-    public void selectDeparture(int choice) {
+    public void selectDeparture(int choice) throws IOException {
         if (choice >= 0 && choice < destinations.size()) {
             destinations.stream().filter(d -> destinations.indexOf(d) != choice).forEach(e -> LOGGER.info("[" + destinations.indexOf(e) + "]. " + e.getCity()));
             setDeparture(destinations.stream().filter(d -> destinations.indexOf(d) == choice).findAny().orElse(null));
         } else {
-            throw new IllegalArgumentException("Parameter out of bounds");
+            LOGGER.info("\n~~~~~~Illegal destination choice, restarting the app~~~~~~\n");
+            run();
         }
     }
 
-    public void selectDestination(int choice) {
-        if (choice >= 0 && choice < destinations.size()) {
+    public void selectDestination(int choice) throws IOException {
+        if (choice >= 0 && choice < destinations.size() && choice != destinations.indexOf(departure)) {
             destinations.stream().filter(d -> destinations.indexOf(d) == choice).forEach(e -> LOGGER.info("Destination Selected: " + e.getCity()));
             setfDestination(destinations.stream().filter(d -> destinations.indexOf(d) == choice).findAny().orElse(null));
         } else {
-            throw new IllegalArgumentException("Parameter out of bounds");
+            LOGGER.info("\n~~~~~~Illegal destination choice, restarting the app~~~~~~\n");
+            run();
         }
     }
 
@@ -160,10 +166,11 @@ public class Application {
                     getTripInJsonFormat(possiblesGraphTrips.get(0));
                     break;
                 default:
-                    throw new IllegalArgumentException("Invalid choice");
+                    LOGGER.info("\n~~~~~~Illegal Filter choice, restarting the app~~~~~~\n");
             }
             LOGGER.info("______________________________");
         }
+        run();
     }
 
     public void printAllTrips() {
