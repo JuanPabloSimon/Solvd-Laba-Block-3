@@ -115,19 +115,18 @@ public class Application {
         paths.forEach(p -> {
             ArrayList<Trip> trip = getAirport(p.get(0)).searchRoute(getAirport(p.get(1))); //All direct flights
             if (p.size() > 2) {
-                p.forEach(t -> {
-                    if (p.indexOf(t) != (p.size() - 1) && p.indexOf(t) != 0) {
-                        ArrayList<Trip> possibleTripNextPart = getAirport(p.get(p.indexOf(t))).searchRoute(getAirport(p.get(p.indexOf(t) + 1)));
-                        if (!possibleTripNextPart.isEmpty()) {
-                            ArrayList<Trip> temp = new ArrayList<Trip>();
-                            trip.forEach(ts -> {
-                                possibleTripNextPart.forEach(t2 -> {
-                                    temp.add(new Trip(ts, t2));
-                                });
+                p.stream().filter(t -> (p.indexOf(t) != 0) && (p.indexOf(t) != (p.size() - 1))).forEach(t -> {
+                    ArrayList<Trip> possibleTripNextPart = getAirport(p.get(p.indexOf(t)))
+                            .searchRoute(getAirport(p.get(p.indexOf(t) + 1)));
+                    if (!possibleTripNextPart.isEmpty()) {
+                        ArrayList<Trip> temp = new ArrayList<Trip>();
+                        trip.forEach(ts -> {
+                            possibleTripNextPart.forEach(t2 -> {
+                                temp.add(new Trip(ts, t2));
                             });
-                            trip.clear();
-                            trip.addAll(temp);
-                        }
+                        });
+                        trip.clear();
+                        trip.addAll(temp);
                     }
                 });
                 completeTrips.addAll(trip);
