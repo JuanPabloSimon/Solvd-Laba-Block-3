@@ -23,11 +23,13 @@ bin/*/
 *.idea
 /out/
 /.idea/
-/resources/
 /logs/
 logs/*
 */logs
 /labaTeam/musichall.iml
 /labaTeam/target
 /target/
-*/trip.json
+*.json
+!tripExample.json
+*.xml
+!tripExample.xml
