@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class Application {
     private static final Logger LOGGER = LogManager.getLogger(Application.class);
     private static final int MAX_TRIP_STEPS = 4;
+    private static final int CLOSE_APP = 99;
     private AirportService airportService;
     private List<Airport> destinations;
     private Airport departure;
@@ -37,14 +38,14 @@ public class Application {
         for (Airport a : destinations) {
             LOGGER.info("[" + destinations.indexOf(a) + "]. " + a.getName() + ", " + a.getCity() + ", " + a.getCountry());
         }
-        LOGGER.info("\n[" + 99 + "]. " + "To close the app");
+        LOGGER.info("\n[" + CLOSE_APP + "]. " + "To close the app");
         choice = scanner.nextInt();
-        if (choice == 99)
+        if (choice == CLOSE_APP)
             return;
         LOGGER.info("Select your destination: ");
         selectDeparture(choice);
         choice = scanner.nextInt();
-        if (choice == 99)
+        if (choice == CLOSE_APP)
             return;
         selectDestination(choice);
         if (departure != null && departure != fDestination & fDestination != null) {
@@ -53,17 +54,16 @@ public class Application {
                     "[1]. Fastest Trip\n" +
                     "[99]. To close the app");
             choice = scanner.nextInt();
-            if (choice == 99)
+            if (choice == CLOSE_APP)
                 return;
             selectTypeOfFilter(choice);
         }
-//        LOGGER.info("Would you like to see all possible trip options and compare them manually?: \n" +
-//                "[0]. No \n" +
-//                "[1]. Yes");
-//        choice = scanner.nextInt();
-//        if (choice == 1) {
-//            printAllTrips();
-//        }
+        LOGGER.info("Do you want to search another trip?\n" +
+                "[0]. Yes\n[99]. No");
+        choice = scanner.nextInt();
+        if (choice == 0) {
+            run();
+        }
 
     }
 
@@ -112,21 +112,23 @@ public class Application {
     public ArrayList<Trip> buildAllTrips(ArrayList<List<String>> paths) {
         ArrayList<Trip> completeTrips = new ArrayList<>();
         paths.forEach(p -> {
-            ArrayList<Trip> trip = getAirport(p.get(0)).searchRoute(getAirport(p.get(1)));//All direct flights
+            ArrayList<Trip> trip = getAirport(p.get(0)).searchRoute(getAirport(p.get(1))); //All direct flights
             if (p.size() > 2) {
-                for (int i = 1; i < (p.size() - 1); i++) {
-                    ArrayList<Trip> possibleTripNextPart = getAirport(p.get(i)).searchRoute(getAirport(p.get(i + 1)));
-                    if (!possibleTripNextPart.isEmpty()) {
-                        ArrayList<Trip> temp = new ArrayList<Trip>();
-                        trip.forEach(t -> {
-                            possibleTripNextPart.forEach(t2 -> {
-                                temp.add(new Trip(t, t2));
+                p.forEach(t -> {
+                    if (p.indexOf(t) != (p.size() - 1) && p.indexOf(t) != 0) {
+                        ArrayList<Trip> possibleTripNextPart = getAirport(p.get(p.indexOf(t))).searchRoute(getAirport(p.get(p.indexOf(t) + 1)));
+                        if (!possibleTripNextPart.isEmpty()) {
+                            ArrayList<Trip> temp = new ArrayList<Trip>();
+                            trip.forEach(ts -> {
+                                possibleTripNextPart.forEach(t2 -> {
+                                    temp.add(new Trip(ts, t2));
+                                });
                             });
-                        });
-                        trip.clear();
-                        trip.addAll(temp);
+                            trip.clear();
+                            trip.addAll(temp);
+                        }
                     }
-                }
+                });
                 completeTrips.addAll(trip);
             } else {
                 completeTrips.addAll(trip);
@@ -165,13 +167,21 @@ public class Application {
             switch (choice) {
                 case 0:
                     possiblesGraphTrips.sort(Comparator.comparing(Trip::getPrice));
-                    LOGGER.info("\nCheaper:\n" + possiblesGraphTrips.get(0));
+                    possiblesGraphTrips.get(0).getFlights().forEach(f -> {
+                        LOGGER.info("- Take flight " + f.getId() + " of " + f.getAirline() + " at " + f.getStart().getName() + " to get to " +
+                                f.getDestination().getName());
+                    });
+                    LOGGER.info("- You achieved your final destination :)");
                     getTripInJsonFormat(possiblesGraphTrips.get(0));
                     XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
                     break;
                 case 1:
                     possiblesGraphTrips.sort(Comparator.comparing(Trip::getDistance));
-                    LOGGER.info("\nShortest:\n" + possiblesGraphTrips.get(0));
+                    possiblesGraphTrips.get(0).getFlights().forEach(f -> {
+                        LOGGER.info("- Take flight" + f.getId() + " of " + f.getAirline() + " at " + f.getStart().getName() + " to get to " +
+                                f.getDestination().getName());
+                    });
+                    LOGGER.info("- You achieved your final destination :)");
                     getTripInJsonFormat(possiblesGraphTrips.get(0));
                     XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
                     break;
@@ -180,7 +190,6 @@ public class Application {
             }
             LOGGER.info("______________________________");
         }
-        run();
     }
 
     public void printAllTrips() {

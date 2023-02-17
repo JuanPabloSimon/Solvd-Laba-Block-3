@@ -1,75 +1,56 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<trip id="60">
+<trip id="84">
     <startLocation>
+        <name>Paris Charles de Gaulle Airport</name>
+        <country>France</country>
+        <city>Paris</city>
+        <latitude>49.00665965</latitude>
+        <longitude>2.57076947408831</longitude>
+    </startLocation>
+    <finalDestination>
         <name>Ezeiza International Airport</name>
         <country>Argentina</country>
         <city>Buenos Aires</city>
         <latitude>-34.816848</latitude>
         <longitude>-58.5474638280231</longitude>
-    </startLocation>
-    <finalDestination>
-        <name>Hong Kong International Airport</name>
-        <country>China</country>
-        <city>Hong Kong</city>
-        <latitude>22.3160874</latitude>
-        <longitude>113.936478399961</longitude>
     </finalDestination>
     <flights>
-        <flight id="28">
+        <flight id="49">
+            <airline>Air France</airline>
+            <price>800.0</price>
+            <distance>9184.812554450786</distance>
+            <flightStart>
+                <name>Paris Charles de Gaulle Airport</name>
+                <country>France</country>
+                <city>Paris</city>
+                <latitude>49.00665965</latitude>
+                <longitude>2.57076947408831</longitude>
+            </flightStart>
+            <flightDestination>
+                <name>Tom Jobim International Airport</name>
+                <country>Brazil</country>
+                <city>Rio de Janeiro</city>
+                <latitude>-22.81130575</latitude>
+                <longitude>-43.2574758760471</longitude>
+            </flightDestination>
+        </flight>
+        <flight id="30">
             <airline>Aerolineas Argeninas</airline>
-            <price>700.0</price>
+            <price>400.0</price>
             <distance>1995.5495225286172</distance>
             <flightStart>
+                <name>Tom Jobim International Airport</name>
+                <country>Brazil</country>
+                <city>Rio de Janeiro</city>
+                <latitude>-22.81130575</latitude>
+                <longitude>-43.2574758760471</longitude>
+            </flightStart>
+            <flightDestination>
                 <name>Ezeiza International Airport</name>
                 <country>Argentina</country>
                 <city>Buenos Aires</city>
                 <latitude>-34.816848</latitude>
                 <longitude>-58.5474638280231</longitude>
-            </flightStart>
-            <flightDestination>
-                <name>Tom Jobim International Airport</name>
-                <country>Brazil</country>
-                <city>Rio de Janeiro</city>
-                <latitude>-22.81130575</latitude>
-                <longitude>-43.2574758760471</longitude>
-            </flightDestination>
-        </flight>
-        <flight id="18">
-            <airline>Emirates</airline>
-            <price>950.0</price>
-            <distance>8147.902970877399</distance>
-            <flightStart>
-                <name>Tom Jobim International Airport</name>
-                <country>Brazil</country>
-                <city>Rio de Janeiro</city>
-                <latitude>-22.81130575</latitude>
-                <longitude>-43.2574758760471</longitude>
-            </flightStart>
-            <flightDestination>
-                <name>Madrid-Barajas Airport</name>
-                <country>Spain</country>
-                <city>Madrid</city>
-                <latitude>40.4948384</latitude>
-                <longitude>-3.57408062068113</longitude>
-            </flightDestination>
-        </flight>
-        <flight id="73">
-            <airline>Japan Airlines</airline>
-            <price>1240.0</price>
-            <distance>10506.903926935698</distance>
-            <flightStart>
-                <name>Madrid-Barajas Airport</name>
-                <country>Spain</country>
-                <city>Madrid</city>
-                <latitude>40.4948384</latitude>
-                <longitude>-3.57408062068113</longitude>
-            </flightStart>
-            <flightDestination>
-                <name>Hong Kong International Airport</name>
-                <country>China</country>
-                <city>Hong Kong</city>
-                <latitude>22.3160874</latitude>
-                <longitude>113.936478399961</longitude>
             </flightDestination>
         </flight>
     </flights>
