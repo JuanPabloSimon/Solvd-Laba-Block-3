@@ -173,7 +173,7 @@ public class Application {
                                 f.getDestination().getName());
                     });
                     LOGGER.info("- You achieved your final destination :)");
-                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0));
+                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0),"labaTeam/src/main/resources/json/trip.json");
                     XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
                     break;
                 case 1:
@@ -183,7 +183,7 @@ public class Application {
                                 f.getDestination().getName());
                     });
                     LOGGER.info("- You achieved your final destination :)");
-                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0));
+                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0),"labaTeam/src/main/resources/json/trip.json");
                     XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
                     break;
                 default:

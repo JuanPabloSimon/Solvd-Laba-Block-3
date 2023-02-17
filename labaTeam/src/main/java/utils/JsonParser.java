@@ -15,14 +15,14 @@ import java.io.IOException;
 public class JsonParser {
     private static final Logger LOGGER = LogManager.getLogger(JsonParser.class);
 
-    public static void getTripInJsonFormat(Trip trip)  {
+    public static void getTripInJsonFormat(Trip trip, String filePath)  {
         try {
             ObjectMapper om = new ObjectMapper();
             om.enable(SerializationFeature.INDENT_OUTPUT);
             // serialize the trip object to JSON string
             String json = om.writeValueAsString(trip);
             // save the JSON string to a file
-            FileWriter fileWriter = new FileWriter("labaTeam/src/main/resources/json/trip.json");
+            FileWriter fileWriter = new FileWriter(filePath);
             fileWriter.write(json);
             fileWriter.close();
         } catch (IOException e){
