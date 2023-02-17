@@ -112,23 +112,24 @@ public class Application {
 
     public ArrayList<Trip> buildAllTrips(ArrayList<List<String>> paths) {
         ArrayList<Trip> completeTrips = new ArrayList<>();
-        paths.forEach(p -> {
-            ArrayList<Trip> trip = getAirport(p.get(0)).searchRoute(getAirport(p.get(1))); //All direct flights
-            if (p.size() > 2) {
-                p.stream().filter(t -> (p.indexOf(t) != 0) && (p.indexOf(t) != (p.size() - 1))).forEach(t -> {
-                    ArrayList<Trip> possibleTripNextPart = getAirport(p.get(p.indexOf(t)))
-                            .searchRoute(getAirport(p.get(p.indexOf(t) + 1)));
-                    if (!possibleTripNextPart.isEmpty()) {
-                        ArrayList<Trip> temp = new ArrayList<Trip>();
-                        trip.forEach(ts -> {
-                            possibleTripNextPart.forEach(t2 -> {
-                                temp.add(new Trip(ts, t2));
-                            });
+        paths.forEach(path -> {
+            ArrayList<Trip> trip = getAirport(path.get(0)).searchRoute(getAirport(path.get(1))); //All direct flights
+            if (path.size() > 2) {
+                path.stream().filter(stop -> (path.indexOf(stop) != 0) && (path.indexOf(stop) != (path.size() - 1)))
+                        .forEach(stop -> {
+                            ArrayList<Trip> possibleTripNextPart = getAirport(path.get(path.indexOf(stop)))
+                                    .searchRoute(getAirport(path.get(path.indexOf(stop) + 1)));
+                            if (!possibleTripNextPart.isEmpty()) {
+                                ArrayList<Trip> temp = new ArrayList<Trip>();
+                                trip.forEach(t1 -> {
+                                    possibleTripNextPart.forEach(t2 -> {
+                                        temp.add(new Trip(t1, t2));
+                                    });
+                                });
+                                trip.clear();
+                                trip.addAll(temp);
+                            }
                         });
-                        trip.clear();
-                        trip.addAll(temp);
-                    }
-                });
                 completeTrips.addAll(trip);
             } else {
                 completeTrips.addAll(trip);
