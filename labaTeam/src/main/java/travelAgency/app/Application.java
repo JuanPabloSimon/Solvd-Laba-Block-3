@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import service.mybatis.AirportService;
 import travelAgency.airport.Airport;
 import travelAgency.trip.Trip;
+import utils.JsonParser;
 import utils.XmlParser;
 
 import java.io.FileWriter;
@@ -172,7 +173,7 @@ public class Application {
                                 f.getDestination().getName());
                     });
                     LOGGER.info("- You achieved your final destination :)");
-                    getTripInJsonFormat(possiblesGraphTrips.get(0));
+                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0));
                     XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
                     break;
                 case 1:
@@ -182,7 +183,7 @@ public class Application {
                                 f.getDestination().getName());
                     });
                     LOGGER.info("- You achieved your final destination :)");
-                    getTripInJsonFormat(possiblesGraphTrips.get(0));
+                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0));
                     XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
                     break;
                 default:
@@ -264,17 +265,5 @@ public class Application {
     public Airport getAirport(String airport) {
         return destinations.stream().filter(d -> airport.equals(d.getCity())).findFirst().orElse(null);
     }
-
-    public void getTripInJsonFormat(Trip trip) throws IOException {
-        ObjectMapper om = new ObjectMapper();
-        om.enable(SerializationFeature.INDENT_OUTPUT);
-        // serialize the trip object to JSON string
-        String json = om.writeValueAsString(trip);
-        // save the JSON string to a file
-        FileWriter fileWriter = new FileWriter("labaTeam/src/main/resources/json/trip.json");
-        fileWriter.write(json);
-        fileWriter.close();
-    }
-
 
 }
