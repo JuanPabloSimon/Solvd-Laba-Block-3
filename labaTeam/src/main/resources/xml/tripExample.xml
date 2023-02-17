@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<trip id="141">
+    <startLocation>
+        <name>Paris Charles de Gaulle Airport</name>
+        <country>France</country>
+        <city>Paris</city>
+        <latitude>49.00665965</latitude>
+        <longitude>2.57076947408831</longitude>
+    </startLocation>
+    <finalDestination>
+        <name>Hong Kong International Airport</name>
+        <country>China</country>
+        <city>Hong Kong</city>
+        <latitude>22.3160874</latitude>
+        <longitude>113.936478399961</longitude>
+    </finalDestination>
+    <flights>
+        <flight id="68">
+            <airline>British Airways</airline>
+            <price>65.0</price>
+            <distance>312.12582952252853</distance>
+            <flightStart>
+                <name>Paris Charles de Gaulle Airport</name>
+                <country>France</country>
+                <city>Paris</city>
+                <latitude>49.00665965</latitude>
+                <longitude>2.57076947408831</longitude>
+            </flightStart>
+            <flightDestination>
+                <name>London City Airport</name>
+                <country>England</country>
+                <city>London</city>
+                <latitude>51.46773895</latitude>
+                <longitude>0.458780074157118</longitude>
+            </flightDestination>
+        </flight>
+        <flight id="72">
+            <airline>Japan Airlines</airline>
+            <price>750.0</price>
+            <distance>9577.075886647757</distance>
+            <flightStart>
+                <name>London City Airport</name>
+                <country>England</country>
+                <city>London</city>
+                <latitude>51.46773895</latitude>
+                <longitude>0.458780074157118</longitude>
+            </flightStart>
+            <flightDestination>
+                <name>Hong Kong International Airport</name>
+                <country>China</country>
+                <city>Hong Kong</city>
+                <latitude>22.3160874</latitude>
+                <longitude>113.936478399961</longitude>
+            </flightDestination>
+        </flight>
+    </flights>
+</trip>

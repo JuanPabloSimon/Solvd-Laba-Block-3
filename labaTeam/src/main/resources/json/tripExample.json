@@ -1,0 +1,58 @@
+{
+  "price" : 815.0,
+  "distance" : 9889.2,
+  "tripId" : 141,
+  "start" : {
+    "name" : "Paris Charles de Gaulle Airport",
+    "country" : "France",
+    "city" : "Paris",
+    "latitude" : 49.00665965,
+    "longitude" : 2.57076947408831
+  },
+  "finalDestination" : {
+    "name" : "Hong Kong International Airport",
+    "country" : "China",
+    "city" : "Hong Kong",
+    "latitude" : 22.3160874,
+    "longitude" : 113.936478399961
+  },
+  "flights" : [ {
+    "id" : 68,
+    "airline" : "British Airways",
+    "price" : 65.0,
+    "distance" : 312.12582952252853,
+    "start" : {
+      "name" : "Paris Charles de Gaulle Airport",
+      "country" : "France",
+      "city" : "Paris",
+      "latitude" : 49.00665965,
+      "longitude" : 2.57076947408831
+    },
+    "destination" : {
+      "name" : "London City Airport",
+      "country" : "England",
+      "city" : "London",
+      "latitude" : 51.46773895,
+      "longitude" : 0.458780074157118
+    }
+  }, {
+    "id" : 72,
+    "airline" : "Japan Airlines",
+    "price" : 750.0,
+    "distance" : 9577.075886647757,
+    "start" : {
+      "name" : "London City Airport",
+      "country" : "England",
+      "city" : "London",
+      "latitude" : 51.46773895,
+      "longitude" : 0.458780074157118
+    },
+    "destination" : {
+      "name" : "Hong Kong International Airport",
+      "country" : "China",
+      "city" : "Hong Kong",
+      "latitude" : 22.3160874,
+      "longitude" : 113.936478399961
+    }
+  } ]
+}

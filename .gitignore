@@ -23,7 +23,6 @@ bin/*/
 *.idea
 /out/
 /.idea/
-/resources/
 /logs/
 logs/*
 */logs
@@ -31,4 +30,6 @@ logs/*
 /labaTeam/target
 /target/
 *.json
-!tripTest.json
+!tripExample.json
+*.xml
+!tripExample.xml
