@@ -1,7 +1,5 @@
 package travelAgency.app;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import helpers.Graph;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,7 +9,6 @@ import travelAgency.trip.Trip;
 import utils.JsonParser;
 import utils.XmlParser;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -191,37 +188,6 @@ public class Application {
             }
             LOGGER.info("______________________________");
         }
-    }
-
-    public void printAllTrips() {
-        ArrayList<Trip> possiblesGraphTrips = searchAllTripsWithGraph();
-        if (!possiblesGraphTrips.isEmpty()) {
-            LOGGER.info("\n");
-            LOGGER.info("You have this trips options:" + possiblesGraphTrips.size());
-            possiblesGraphTrips.forEach(t -> {
-                if (t.getFlights().size() < 2) {
-                    LOGGER.info("- Direct");
-                } else {
-                    LOGGER.info("- With " + (t.getFlights().size() - 1) + " Stop/s");
-                }
-            });
-            possiblesGraphTrips.forEach(t -> {
-                LOGGER.info("\n" + t);
-            });
-        } else {
-            LOGGER.info("No flights founded");
-        }
-    }
-
-    public ArrayList<Trip> searchAllTrips() throws IOException {
-        ArrayList<Trip> trips = new ArrayList<>();
-        trips.addAll(searchDirectTrip());//search direct flight
-        trips.addAll(searchOneStopTrip());
-        return trips;
-    }
-
-    private ArrayList<Trip> searchDirectTrip() {
-        return departure.searchRoute(fDestination);
     }
 
     private ArrayList<Trip> searchOneStopTrip() {
