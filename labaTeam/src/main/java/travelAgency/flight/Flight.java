@@ -1,7 +1,7 @@
 package travelAgency.flight;
 
-import helpers.DistanceCalculator;
 import travelAgency.airport.AirportLocation;
+import utils.DistanceCalculator;
 
 import javax.xml.bind.annotation.*;
 
