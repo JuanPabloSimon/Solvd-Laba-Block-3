@@ -1,7 +1,5 @@
 package travelAgency.app;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import helpers.Graph;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -11,7 +9,6 @@ import travelAgency.trip.Trip;
 import utils.JsonParser;
 import utils.XmlParser;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,12 +37,12 @@ public class Application {
             LOGGER.info("[" + destinations.indexOf(a) + "]. " + a.getName() + ", " + a.getCity() + ", " + a.getCountry());
         }
         LOGGER.info("\n[" + CLOSE_APP + "]. " + "To close the app");
-        choice = scanner.nextInt();
+        choice = selectChoice();
         if (choice == CLOSE_APP)
             return;
         LOGGER.info("Select your destination: ");
         selectDeparture(choice);
-        choice = scanner.nextInt();
+        choice = selectChoice();
         if (choice == CLOSE_APP)
             return;
         selectDestination(choice);
@@ -54,27 +51,39 @@ public class Application {
                     "[0]. Cheapest Trip \n" +
                     "[1]. Fastest Trip\n" +
                     "[99]. To close the app");
-            choice = scanner.nextInt();
+            choice = selectChoice();
             if (choice == CLOSE_APP)
                 return;
             selectTypeOfFilter(choice);
         }
         LOGGER.info("Do you want to search another trip?\n" +
                 "[0]. Yes\n[99]. No");
-        choice = scanner.nextInt();
+        choice = selectChoice();
         if (choice == 0) {
             run();
         }
 
     }
 
-    private ArrayList<Trip> searchAllTripsWithGraph() {
-        ArrayList<List<String>> paths = createPossibleTripsBetweenTwoCities(departure.getCity(), fDestination.getCity());
-        paths = paths.stream().filter(p -> p.size() <= MAX_TRIP_STEPS).collect(Collectors.toCollection(ArrayList::new));
-        return buildAllTrips(paths);
+    public int selectChoice() {
+        int choice = -1;
+        while (choice < 0 || (choice >= destinations.size() && choice != CLOSE_APP)) {
+            try {
+                choice = scanner.nextInt();
+                scanner.nextLine();
+                if (choice < 0 || (choice >= destinations.size() && choice != CLOSE_APP)) {
+                    LOGGER.info("Select a valid number");
+                }
+            } catch (InputMismatchException e) {
+                LOGGER.error("Invalid option type, please select a valid number");
+                scanner.nextLine();
+            }
+        }
+        return choice;
     }
 
-    public ArrayList<List<String>> createPossibleTripsBetweenTwoCities(String city1, String city2) {
+
+    public ArrayList<Trip> createPossibleTripsBetweenTwoCities(String city1, String city2) {
         Graph<String> graph = new Graph<>();
         destinations.forEach(d -> {
             graph.addVertex(d.getCity());
@@ -87,11 +96,14 @@ public class Application {
         List<String> path = new ArrayList<>();
         // Call recursive utility
         Set<String> visited = new HashSet<>();
-        printAllPathsUtil(city1, city2, visited, paths, path, graph);
-        return paths;
+        searchAllPathsUtil(city1, city2, visited, paths, path, graph);
+
+        paths = paths.stream().filter(p -> p.size() <= MAX_TRIP_STEPS).collect(Collectors.toCollection(ArrayList::new));
+
+        return buildAllTrips(paths);
     }
 
-    private void printAllPathsUtil(String city1, String city2, Set<String> visited, ArrayList<List<String>> paths, List<String> path, Graph<String> graph) {
+    private void searchAllPathsUtil(String city1, String city2, Set<String> visited, ArrayList<List<String>> paths, List<String> path, Graph<String> graph) {
         if (city1.equals(city2)) {
             LinkedList<String> path1 = new LinkedList<>(path);
             path1.addFirst(departure.getCity());
@@ -103,7 +115,7 @@ public class Application {
             String d = (String) c;
             if (!visited.contains(d)) {
                 path.add(d);
-                printAllPathsUtil(d, city2, visited, paths, path, graph);
+                searchAllPathsUtil(d, city2, visited, paths, path, graph);
                 path.remove(d);
             }
         }
@@ -160,31 +172,18 @@ public class Application {
     }
 
     public void selectTypeOfFilter(int choice) throws IOException {
-        ArrayList<Trip> possiblesGraphTrips = searchAllTripsWithGraph();
+        ArrayList<Trip> possiblesGraphTrips = createPossibleTripsBetweenTwoCities(departure.getCity(), fDestination.getCity());
         if (possiblesGraphTrips.isEmpty()) {
             LOGGER.info("No flights founded");
         } else {
             LOGGER.info("______________________________");
+
             switch (choice) {
                 case 0:
-                    possiblesGraphTrips.sort(Comparator.comparing(Trip::getPrice));
-                    possiblesGraphTrips.get(0).getFlights().forEach(f -> {
-                        LOGGER.info("- Take flight " + f.getId() + " of " + f.getAirline() + " at " + f.getStart().getName() + " to get to " +
-                                f.getDestination().getName());
-                    });
-                    LOGGER.info("- You achieved your final destination :)");
-                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0),"labaTeam/src/main/resources/json/trip.json");
-                    XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
+                    printFirstTrip(Comparator.comparing(Trip::getPrice), possiblesGraphTrips);
                     break;
                 case 1:
-                    possiblesGraphTrips.sort(Comparator.comparing(Trip::getDistance));
-                    possiblesGraphTrips.get(0).getFlights().forEach(f -> {
-                        LOGGER.info("- Take flight" + f.getId() + " of " + f.getAirline() + " at " + f.getStart().getName() + " to get to " +
-                                f.getDestination().getName());
-                    });
-                    LOGGER.info("- You achieved your final destination :)");
-                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0),"labaTeam/src/main/resources/json/trip.json");
-                    XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
+                    printFirstTrip(Comparator.comparing(Trip::getDistance), possiblesGraphTrips);
                     break;
                 default:
                     LOGGER.info("\n~~~~~~Illegal Filter choice, restarting the app~~~~~~\n");
@@ -193,57 +192,15 @@ public class Application {
         }
     }
 
-    public void printAllTrips() {
-        ArrayList<Trip> possiblesGraphTrips = searchAllTripsWithGraph();
-        if (!possiblesGraphTrips.isEmpty()) {
-            LOGGER.info("\n");
-            LOGGER.info("You have this trips options:" + possiblesGraphTrips.size());
-            possiblesGraphTrips.forEach(t -> {
-                if (t.getFlights().size() < 2) {
-                    LOGGER.info("- Direct");
-                } else {
-                    LOGGER.info("- With " + (t.getFlights().size() - 1) + " Stop/s");
-                }
-            });
-            possiblesGraphTrips.forEach(t -> {
-                LOGGER.info("\n" + t);
-            });
-        } else {
-            LOGGER.info("No flights founded");
-        }
-    }
-
-    public ArrayList<Trip> searchAllTrips() throws IOException {
-        ArrayList<Trip> trips = new ArrayList<>();
-        trips.addAll(searchDirectTrip());//search direct flight
-        trips.addAll(searchOneStopTrip());
-        return trips;
-    }
-
-    private ArrayList<Trip> searchDirectTrip() {
-        return departure.searchRoute(fDestination);
-    }
-
-    private ArrayList<Trip> searchOneStopTrip() {
-        Set<String> possibleFirstStop = departure.getPossibleDestinations();//search possible first stop
-        possibleFirstStop.remove(fDestination.getCity());
-        ArrayList<Trip> completeTrip = new ArrayList<Trip>();
-        //search for a trip with a stop
-        destinations.stream()
-                .filter(d -> possibleFirstStop.contains(d.getCity()))
-                .forEach(d -> {//You can also go to Your final Destination from:
-                    ArrayList<Trip> possibleTripSecondPart = d.searchRoute(fDestination);
-
-                    if (!possibleTripSecondPart.isEmpty()) {
-                        ArrayList<Trip> possibleTripFirstPart = departure.searchRoute(d);
-                        possibleTripFirstPart.forEach(t -> {
-                            possibleTripSecondPart.forEach(t2 -> {
-                                completeTrip.add(new Trip(t, t2));
-                            });
-                        });
-                    }
-                });
-        return completeTrip;
+    public void printFirstTrip(Comparator c, ArrayList<Trip> t) {
+        t.sort(c);
+        t.get(0).getFlights().forEach(f -> {
+            LOGGER.info("- Take flight_" + f.getId() + " of " + f.getAirline() + " at " + f.getStart().getName() + " to get to " +
+                    f.getDestination().getName());
+        });
+        LOGGER.info("- You achieved your final destination :)");
+        JsonParser.getTripInJsonFormat(t.get(0), "labaTeam/src/main/resources/json/trip.json");
+        XmlParser.marshall(t.get(0), "labaTeam/src/main/resources/xml/trip.xml");
     }
 
     public Airport getfDestination() {
