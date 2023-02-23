@@ -170,7 +170,7 @@ public class Application {
                                 f.getDestination().getName());
                     });
                     LOGGER.info("- You achieved your final destination :)");
-                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0),"labaTeam/src/main/resources/json/trip.json");
+                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/json/trip.json");
                     XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
                     break;
                 case 1:
@@ -180,7 +180,7 @@ public class Application {
                                 f.getDestination().getName());
                     });
                     LOGGER.info("- You achieved your final destination :)");
-                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0),"labaTeam/src/main/resources/json/trip.json");
+                    JsonParser.getTripInJsonFormat(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/json/trip.json");
                     XmlParser.marshall(possiblesGraphTrips.get(0), "labaTeam/src/main/resources/xml/trip.xml");
                     break;
                 default:
@@ -188,28 +188,6 @@ public class Application {
             }
             LOGGER.info("______________________________");
         }
-    }
-
-    private ArrayList<Trip> searchOneStopTrip() {
-        Set<String> possibleFirstStop = departure.getPossibleDestinations();//search possible first stop
-        possibleFirstStop.remove(fDestination.getCity());
-        ArrayList<Trip> completeTrip = new ArrayList<Trip>();
-        //search for a trip with a stop
-        destinations.stream()
-                .filter(d -> possibleFirstStop.contains(d.getCity()))
-                .forEach(d -> {//You can also go to Your final Destination from:
-                    ArrayList<Trip> possibleTripSecondPart = d.searchRoute(fDestination);
-
-                    if (!possibleTripSecondPart.isEmpty()) {
-                        ArrayList<Trip> possibleTripFirstPart = departure.searchRoute(d);
-                        possibleTripFirstPart.forEach(t -> {
-                            possibleTripSecondPart.forEach(t2 -> {
-                                completeTrip.add(new Trip(t, t2));
-                            });
-                        });
-                    }
-                });
-        return completeTrip;
     }
 
     public Airport getfDestination() {
