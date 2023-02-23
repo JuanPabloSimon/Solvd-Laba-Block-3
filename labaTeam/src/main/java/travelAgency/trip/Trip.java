@@ -5,24 +5,23 @@ import travelAgency.airport.Airport;
 import travelAgency.airport.AirportLocation;
 import travelAgency.flight.Flight;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
 @XmlRootElement(name = "trip")
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Trip {
     private static int tripId = 0;
-    @XmlAttribute(name = "id")
+
     @JsonProperty("tripId")
     private int id;
-    @XmlElement(name = "startLocation")
     @JsonProperty("start")
     private AirportLocation start;
-    @XmlElement(name = "finalDestination")
     @JsonProperty("finalDestination")
     private AirportLocation finalDestination;
-    @XmlElementWrapper(name = "flights")
-    @XmlElement(name = "flight")
+
     @JsonProperty("flights")
     private ArrayList<Flight> flights;
 
@@ -61,6 +60,7 @@ public class Trip {
         this.flights.addAll(t2.getFlights());
     }
 
+    @XmlAttribute(name = "id")
     public int getId() {
         return id;
     }
@@ -71,6 +71,7 @@ public class Trip {
         }
     }
 
+    @XmlElement(name = "startLocation")
     public AirportLocation getStart() {
         return start;
     }
@@ -79,6 +80,7 @@ public class Trip {
         this.start = start;
     }
 
+    @XmlElement(name = "finalDestination")
     public AirportLocation getFinalDestination() {
         return finalDestination;
     }
@@ -87,6 +89,8 @@ public class Trip {
         this.finalDestination = finalDestination;
     }
 
+    @XmlElementWrapper(name = "flights")
+    @XmlElement(name = "flight")
     public ArrayList<Flight> getFlights() {
         return flights;
     }
@@ -103,10 +107,12 @@ public class Trip {
         this.flights.remove(flight);
     }
 
+    @XmlElement(name = "totalPrice")
     public double getPrice() {
         return this.flights.stream().mapToDouble(Flight::getPrice).sum();
     }
 
+    @XmlElement(name = "totalDistance")
     public double getDistance() {
         return Math.round(this.flights.stream().mapToDouble(Flight::getDistance).sum() * 100.0) / 100.0;
     }

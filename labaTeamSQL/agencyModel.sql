@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS `flightAgency`.`Airport` (
   `airportName` VARCHAR(45) NULL,
   `city` VARCHAR(45) NULL,
   `country` VARCHAR(45) NULL,
-  `latitud` DOUBLE NULL,
-  `longitud` DOUBLE NULL,
+  `latitude` DOUBLE NULL,
+  `longitude` DOUBLE NULL,
   PRIMARY KEY (`idAirport`),
   UNIQUE INDEX `idAirport_UNIQUE` (`idAirport` ASC));
 
@@ -68,9 +68,10 @@ CREATE TABLE IF NOT EXISTS `flightAgency`.`Flight` (
 -- Table `flightAgency`.`AirlineInAirport`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `flightAgency`.`AirlineInAirport` (
+  `idAirlineInAirport` INT NOT NULL AUTO_INCREMENT,
   `Airlines_idAirlines` INT NOT NULL,
   `Airport_idAirport` INT NOT NULL,
-  PRIMARY KEY (`Airlines_idAirlines`, `Airport_idAirport`),
+  PRIMARY KEY (`idAirlineInAirport`),
   INDEX `fk_Airlines_has_Airport_Airport1_idx` (`Airport_idAirport` ASC) ,
   INDEX `fk_Airlines_has_Airport_Airlines1_idx` (`Airlines_idAirlines` ASC) ,
   CONSTRAINT `fk_Airlines_has_Airport_Airlines1`
