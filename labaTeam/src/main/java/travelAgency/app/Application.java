@@ -21,7 +21,6 @@ public class Application {
     private List<Airport> destinations;
     private Airport departure;
     private Airport fDestination;
-    private final int MAX_FLIGHT_CHANGES = 2;
     private Scanner scanner = new Scanner(System.in);
 
     public Application() {
@@ -127,7 +126,7 @@ public class Application {
         ArrayList<Trip> completeTrips = new ArrayList<>();
         paths.forEach(path -> {
             ArrayList<Trip> trip = getAirport(path.get(0)).searchRoute(getAirport(path.get(1))); //All direct flights
-            if (path.size() > MAX_FLIGHT_CHANGES) {
+            if (path.size() > 2) {
                 path.stream().filter(stop -> (path.indexOf(stop) != 0) && (path.indexOf(stop) != (path.size() - 1)))
                         .forEach(stop -> {
                             ArrayList<Trip> possibleTripNextPart = getAirport(path.get(path.indexOf(stop)))
